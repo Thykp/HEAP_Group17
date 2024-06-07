@@ -2,8 +2,8 @@
 
 const express = require('express');
 
-const thisRouter = require('./router/thisRouter');
-const thatRouter = require('./router/thatRouter');
+const thisRouter = require('./routers/thisRouter');
+const thatRouter = require('./routers/thatRouter');
 
 const app = express();
 
