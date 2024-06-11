@@ -3,12 +3,9 @@ import Benefits from "./components/Benefits";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Home from "./pages/Home.jsx"
-import Login from "./pages/Login.jsx"
+import Taskbar from "./components/Taskbar";
+import LineGraph from "./components/LineGraph";
+import Login from "./components/Login";
 
 const App = () => {
   return (
@@ -21,6 +18,8 @@ const App = () => {
       </div>
 
       <ButtonGradient />
+
+      {/* <Login /> */}
     </>
   );
 };
