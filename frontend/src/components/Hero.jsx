@@ -8,6 +8,7 @@ import { useRef } from "react";
 import Generating from "./Generating";
 import Notification from "./Notification";
 import CompanyLogos from "./CompanyLogos";
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   const parallaxRef = useRef(null);
@@ -23,7 +24,7 @@ const Hero = () => {
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            Customised fitness experience integrating &nbsp;AI&nbsp; with {` `}
+            Customised fitness experience with {` `}
             <span className="inline-block relative">
               WorkoutWise{" "}
               <img
@@ -39,9 +40,11 @@ const Hero = () => {
             Unleash the power of AI within WorkoutWise. Upgrade your productivity
             with WorkoutWise.
           </p>
-          <Button href="/pricing" white>
-            Get started
-          </Button>
+          <Link to="/dashboard">
+            <Button white>
+              Get started
+            </Button>
+          </Link>
         </div>
         <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
