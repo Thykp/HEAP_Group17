@@ -1,3 +1,6 @@
+import React, { useState } from 'react';
+import '../css/Login.css'; // Import CSS file for styling
+
 const Login = () => {
     // State variables for email and password inputs
     const [email, setEmail] = useState('');
