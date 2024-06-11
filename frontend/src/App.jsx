@@ -5,21 +5,21 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Taskbar from "./components/Taskbar";
 import LineGraph from "./components/LineGraph";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 
 const App = () => {
   return (
     <>
-      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
+      {/* <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
         <Header />
         <Hero />
         <Benefits />
         <Footer />
       </div>
 
-      <ButtonGradient />
+      <ButtonGradient /> */}
 
-      {/* <Login /> */}
+      <Login />
     </>
   );
 };
