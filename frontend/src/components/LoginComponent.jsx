@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/Login.css'; // Import CSS file for styling
 
-const Login = () => {
+const LoginComponent = () => {
     // State variables for email and password inputs
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -47,4 +47,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginComponent;
