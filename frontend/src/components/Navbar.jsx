@@ -7,7 +7,7 @@ import MenuSvg from "../assets/svg/MenuSvg";
 import { HamburgerMenu } from "./design/Header";
 import { useState } from "react";
 
-const Header = () => {
+const Navbar = () => {
   const pathname = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
 
@@ -88,4 +88,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Navbar;

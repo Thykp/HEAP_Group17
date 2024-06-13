@@ -6,6 +6,7 @@ import Hero from "./components/Hero";
 import Taskbar from "./components/Taskbar";
 import LineGraph from "./components/LineGraph";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
 
 const App = () => {
   return (
@@ -20,6 +21,7 @@ const App = () => {
       <ButtonGradient />
 
       {/* <Login /> */}
+      {/* <Home/> */}
     </>
   );
 };
