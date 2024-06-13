@@ -40,7 +40,7 @@ export const navigation = [
   {
     id: "0",
     title: "Features",
-    url: "#features",
+    url: "features",
   },
   // {
   //   id: "1",
@@ -50,7 +50,7 @@ export const navigation = [
   {
     id: "2",
     title: "How to use",
-    url: "#how-to-use",
+    url: "how-to-use",
   },
   // {
   //   id: "3",
@@ -60,13 +60,13 @@ export const navigation = [
   {
     id: "4",
     title: "New account",
-    url: "#signup",
+    url: "signup",
     onlyMobile: true,
   },
   {
     id: "5",
     title: "Sign in",
-    url: "#login",
+    url: "login",
     onlyMobile: true,
   },
 ];
