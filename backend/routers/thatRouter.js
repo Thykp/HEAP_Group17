@@ -1,5 +1,5 @@
 const express = require("express");
-const { thatRoot, thatHello, thatByeBye } = require("../controller/thatController");
+const { thatRoot, thatHello, thatByeBye } = require("../controllers/thatController");
 
 
 const thatRouter = express.Router();
