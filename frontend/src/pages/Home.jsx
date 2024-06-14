@@ -3,6 +3,8 @@ import Taskbar from '../components/Taskbar.jsx'
 import LineGraph from '../components/LineGraph.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Header from '../components/Header.jsx'
+import BattlePass from '../components/battlepass.jsx';
+
 
 const Home = () => {
   
@@ -14,6 +16,7 @@ const Home = () => {
       <Navbar/>
       <Taskbar workouts={workouts} />
       <LineGraph data={data}/>
+      <BattlePass/>
     </div>
   )
 }
