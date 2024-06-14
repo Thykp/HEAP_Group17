@@ -3,7 +3,7 @@ import Taskbar from '../components/Taskbar.jsx'
 import LineGraph from '../components/LineGraph.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Header from '../components/Header.jsx'
-import Battlepass from '../components/Battlepass.jsx'
+import Battlepass from '../components/Battlepasshome.jsx'
 
 const Home = () => {
   
