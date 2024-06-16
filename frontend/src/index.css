@@ -17,6 +17,31 @@
   scroll-behavior: smooth
 }
 
+/* In your styles.css or equivalent */
+.page-enter {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.page-exit {
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+
+
 @layer base {
   body {
     @apply font-sans bg-n-8 text-n-1 text-base;
