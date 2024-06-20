@@ -14,7 +14,42 @@
 }
 
 * {
-  scroll-behavior: smooth
+  scroll-behavior: smooth;
+}
+
+.adjusted-background-circles {
+  position: absolute;
+  top: 50%; /* Adjust as needed */
+  left: 50%;
+  width: 78rem;
+  height: 78rem; /* Adjust width and height based on design */
+  transform: translate(-50%, -50%);
+  border: 2px solid rgba(0, 0, 0, 0.5); /* Example border styling */
+  border-radius: 50%;
+  z-index: -1;
+}
+
+/* Transition styles for page enter and exit */
+.page-enter {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
 }
 
 @layer base {
@@ -24,65 +59,65 @@
 }
 
 .rotate-45 {
-  @apply rotate-[45deg]
+  @apply rotate-[45deg];
 }
 
 .rotate-90 {
-  @apply rotate-[90deg]
+  @apply rotate-[90deg];
 }
 
 .rotate-135 {
-  @apply rotate-[135deg]
+  @apply rotate-[135deg];
 }
 
 .rotate-180 {
-  @apply rotate-[180deg]
+  @apply rotate-[180deg];
 }
 
 .rotate-225 {
-  @apply rotate-[225deg]
+  @apply rotate-[225deg];
 }
 
 .rotate-270 {
-  @apply rotate-[270deg]
+  @apply rotate-[270deg];
 }
 
 .rotate-315 {
-  @apply rotate-[315deg]
+  @apply rotate-[315deg];
 }
 
 .rotate-360 {
-  @apply rotate-[360deg]
+  @apply rotate-[360deg];
 }
 
 .-rotate-45 {
-  @apply rotate-[-45deg]
+  @apply rotate-[-45deg];
 }
 
 .-rotate-90 {
-  @apply rotate-[-90deg]
+  @apply rotate-[-90deg];
 }
 
 .-rotate-135 {
-  @apply rotate-[-135deg]
+  @apply rotate-[-135deg];
 }
 
 .-rotate-180 {
-  @apply rotate-[-180deg]
+  @apply rotate-[-180deg];
 }
 
 .-rotate-225 {
-  @apply rotate-[-225deg]
+  @apply rotate-[-225deg];
 }
 
 .-rotate-270 {
-  @apply rotate-[-270deg]
+  @apply rotate-[-270deg];
 }
 
 .-rotate-315 {
-  @apply rotate-[-315deg]
+  @apply rotate-[-315deg];
 }
 
 .-rotate-360 {
-  @apply rotate-[-360deg]
+  @apply rotate-[-360deg];
 }
