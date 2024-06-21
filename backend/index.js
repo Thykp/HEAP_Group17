@@ -9,7 +9,7 @@ const app = express();
 
 app.use(express.json());
 
-const PORT = 3000;
+const BACKEND_PORT = 3000;
 
 // Health check endpoint
 app.get('/', (req, res) => {
