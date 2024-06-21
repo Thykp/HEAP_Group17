@@ -13,24 +13,21 @@ async function getUserDetails() {
     };
 
     return records;
+    
 }
 
 async function updateUserDetails(userName, userAge, userHeight, userWeight, userActivity, userDiet, userGoal) {
     
-    try {
-        const { data: records, error } = await supabase
-        .from(user_details)
-        .update({userName: userName, userAge: userAge, userHeight: userHeight, userWeight: userWeight, userActivity: userActivity, userDiet: userDiet, userGoal: userGoal}).select();
-        
+    const { data: records, error } = await supabase
+    .from(user_details)
+    .update({'userName': userName, 'userAge': userAge, 'userHeight': userHeight, 'userWeight': userWeight, 'userActivity': userActivity, 'userDiet': userDiet, 'userGoal': userGoal}).select();
+    
 
-        if (error) {
-            throw error;
-        }
-        return successMessage;
-        
-    } catch (error) {
+    if (error) {
         throw new Error(error.message);
     }
+    
+    return successMessage;
 }
 
 module.exports = {
