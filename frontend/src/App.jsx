@@ -7,12 +7,12 @@ import Landing from "./pages/Landing";
 import Profile from "./pages/Profile";
 import '../src/index.css';
 import Layout from './components/Layout';
+import Signup from './pages/Signup';
 
 const App = () => {
   const location = useLocation();
 
   return (
-    <Layout>
       <TransitionGroup>
         <CSSTransition key={location.key} classNames="page" timeout={500}>
           <Routes location={location}>
@@ -20,10 +20,10 @@ const App = () => {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/signup" element={<Signup />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>
-    </Layout>
   );
 };
 
