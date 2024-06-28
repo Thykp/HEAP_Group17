@@ -9,7 +9,7 @@ router.get('/', async (req, res) => {
         const { username, password } = req.body;
         const account = await userAccount.getUserAccount(username, password);
 
-        if (!(account.length > 0)) {
+        if (account.length <= 0) {
             return res.status(400).json({ "error": "Account does not exist!" });
         }
 
