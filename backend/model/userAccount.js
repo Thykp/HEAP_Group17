@@ -1,4 +1,4 @@
-import supabase from "../database/supabaseClient";
+const { supabase } = require('../database/supabaseClient');
 
 async function getUserAccount() {
 
@@ -7,7 +7,6 @@ async function getUserAccount() {
     .select(`userName, userPassword, userEmail`)
     .eq('userName', userName)
     .eq('userPassword', userPassword)
-    // .order('decision_made_at', { ascending: false })
 
     if (error) {
         throw new Error(error.message);

@@ -1,4 +1,4 @@
-import supabase from "../database/supabaseClient";
+const { supabase } = require('../database/supabaseClient');
 
 async function getUserDetails() {
     
@@ -6,7 +6,6 @@ async function getUserDetails() {
     .from(user_details)
     .select(`userName, userAge, userHeight, userWeight, userActivity, userDiet, userGoal`)
     .eq('userName', userName)
-    // .order('decision_made_at', { ascending: false })
 
     if (error) {
         throw new Error(error.message)

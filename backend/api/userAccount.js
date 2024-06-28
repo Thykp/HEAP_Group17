@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userAccount = require("../model/userAccount");
 
-const BACKEND_PORT = 3000;
-
 router.get('/', async (req, res) => {
 
     try {
