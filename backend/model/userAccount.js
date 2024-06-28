@@ -5,7 +5,7 @@ async function getUserAccount(username, password) {
     
     const { data, error } = await supabase
     .from(userAccountTable)
-    .select('username, password, email')
+    .select('username, password')
     .eq('username', username)
     .eq('password', password)
 
@@ -16,11 +16,8 @@ async function getUserAccount(username, password) {
     if (data.length === 0) {
         console.log("No matching user found.");
     };
-
-    console.log("Data retrieved from Supabase:", data);
     
     return data;
-    
 }
 
 module.exports = {
