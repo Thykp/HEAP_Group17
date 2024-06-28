@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const userDetails = require("../model/userDetails");
 
-const BACKEND_PORT = 3000;
-
 router.get('/', async (req, res) => {
 
     try {
