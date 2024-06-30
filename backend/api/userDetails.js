@@ -7,10 +7,10 @@ router.get('/', async (req, res) => {
     try {
 
         // const userName = req.query.userName;
-        const { username } = req.body;
+        const { uuid } = req.body;
 
 
-        const retrieveDetails = await userDetails.getUserDetails(username);
+        const retrieveDetails = await userDetails.getUserDetails(uuid);
         
         if (retrieveDetails.length <= 0) {
             return res.status(400).json({ "error": "Details not available!" });
@@ -24,13 +24,15 @@ router.get('/', async (req, res) => {
 
 });
 
+
 router.post('/', async (req, res) => {
 
     try {
         const { uuid, username, age, height, weight, activity, diet, goal } = req.body;
-
+        
         const changeDetails = await userDetails.updateUserDetails(uuid, username, age, height, weight, activity, diet, goal);
-        if (changeDetails.length <= 0) {
+                
+        if (changeDetails === 'fail' || changeDetails.length <= 0) {
             return res.status(400).json({ "error": "Cannot change details for some reason!" });
         }
 
