@@ -1,14 +1,12 @@
 const { supabase } = require('../database/supabaseClient');
 const userDetailsTable = 'user_details';
 
-async function getUserDetails(username) {
+async function getUserDetails(uuid) {
     
     const { data, error } = await supabase
     .from(userDetailsTable)
-    .select('username, age, height, weight, activity, diet, goal')
-    .eq('username', username)
-
-    console.log(data);
+    .select('uuid, username, age, height, weight, activity, diet, goal')
+    .eq('uuid', uuid)
 
     if (error) {
         throw new Error(error.message)
@@ -18,21 +16,38 @@ async function getUserDetails(username) {
         console.log("Nothing found.");
     };
 
+    console.log(data);
+
     return data;
     
 }
 
 async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal) {
     
-    const successMessage = "yee";
+    const successMessage = "pass";
+    const failureMessage = "fail";
 
     const { data, error } = await supabase
     .from(userDetailsTable)
-    .update({'username': username, 'age': age, 'height': height, 'weight': weight, 'activity': activity, 'diet': diet, 'goal': goal})
+    .select('uuid')
     .eq('uuid', uuid)
 
     if (error) {
         throw new Error(error.message);
+    }
+
+    if (data.length === 0) {
+        return failureMessage;
+    };
+
+    const { data2, error2 } = await supabase
+    .from(userDetailsTable)
+    .update({'username': username, 'age': age, 'height': height, 'weight': weight, 'activity': activity, 'diet': diet, 'goal': goal})
+    .eq('uuid', uuid)
+
+
+    if (error2) {
+        throw new Error(error2.message);
     }
     
     return successMessage;
