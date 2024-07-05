@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Sections data
 const sections = [
@@ -13,6 +13,8 @@ const sections = [
 
 const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const location = useLocation();
+  const { answers } = location.state || { answers: [] };  // Receive the state from Questions.jsx
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -66,6 +68,15 @@ const Dashboard = () => {
               </h3>
             </Link>
           ))}
+        </div>
+        {/* Display answers */}
+        <div className="mt-8">
+          <h2 className="text-2xl font-bold mb-4">Your Answers</h2>
+          <ul className="list-disc pl-5">
+            {answers.map((answer, index) => (
+              <li key={index} className="mb-2">{answer}</li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

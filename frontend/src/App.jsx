@@ -8,6 +8,7 @@ import Profile from "./pages/Profile";
 import '../src/index.css';
 import Layout from './components/Layout';
 import Signup from './pages/Signup';
+import Questions from './components/Questions';
 
 const App = () => {
   const location = useLocation();
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/questions" element={<Questions />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

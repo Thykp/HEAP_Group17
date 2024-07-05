@@ -40,7 +40,7 @@ const Hero = () => {
             Unleash the power of AI within WorkoutWise. Upgrade your productivity
             with WorkoutWise.
           </p>
-          <Link to="/dashboard">
+          <Link to="/login">
             <Button white>
               Get started
             </Button>

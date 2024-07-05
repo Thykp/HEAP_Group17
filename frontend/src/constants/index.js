@@ -40,7 +40,7 @@ export const navigation = [
   {
     id: "0",
     title: "Features",
-    url: "features",
+    url: "benefits",
   },
   // {
   //   id: "1",
@@ -49,8 +49,8 @@ export const navigation = [
   // },
   {
     id: "2",
-    title: "How to use",
-    url: "how-to-use",
+    title: "About Us",
+    url: "about",
   },
   // {
   //   id: "3",
