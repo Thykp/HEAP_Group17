@@ -52,41 +52,52 @@ async function insertUserAccount(username, password, email) {
     return successMessage;
 }
 
-// async function updateUserAccount(uuid, username, password, email) {
+async function updateUserAccount(uuid, username, password, email) {
     
-//     const successMessage = "pass";
-//     const failureMessage = "fail";
+    const successMessage = "pass";
+    const failureMessage = "fail";
 
-//     console.log(uuid);
+    console.log(uuid);
 
-//     const { data, error } = await supabase
-//     .from(userAccountTable)
-//     .select('uuid')
-//     .eq('uuid', uuid)
+    const { data, error } = await supabase
+    .from(userAccountTable)
+    .select('uuid')
+    .eq('uuid', uuid)
 
-//     if (error) {
-//         throw new Error(error.message);
-//     }
+    if (error) {
+        throw new Error(error.message);
+    }
 
-//     if (data.length === 0) {
-//         return failureMessage;
-//     };
+    if (data.length === 0) {
+        return failureMessage;
+    };
 
-//     const { data2, error2 } = await supabase
-//     .from(userAccountTable)
-//     .update({'username': username, 'password': password, 'email': email})
-//     .eq('uuid', uuid)
+    const { data2, error2 } = await supabase
+    .from(userAccountTable)
+    .update({'username': username, 'password': password, 'email': email})
+    .eq('uuid', uuid)
 
 
-//     if (error2) {
-//         throw new Error(error2.message);
-//     }
+    if (error2) {
+        throw new Error(error2.message);
+    }
+
     
-//     return successMessage;
-// }
+    const { data3, error3 } = await supabase
+    .from(userDetailsTable)
+    .update({'username': username})
+    .eq('uuid', uuid)
+
+
+    if (error3) {
+        throw new Error(error3.message);
+    }
+    
+    return successMessage;
+}
 
 module.exports = {
     getUserAccount,
     insertUserAccount,
-    // updateUserAccount
+    updateUserAccount
 }

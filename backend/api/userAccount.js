@@ -40,24 +40,23 @@ router.post('/', async (req, res) => {
 
 });
 
-// router.post('/', async (req, res) => {
+router.post('/update', async (req, res) => {
 
-//     try {
-//         const { uuid, username, password, email } = req.body;
+    try {
+        const { uuid, username, password, email } = req.body;
         
-//         const updateAccount = await userAccount.updateUserAccount(uuid, username, password, email)
+        const updateAccount = await userAccount.updateUserAccount(uuid, username, password, email);
                 
-//         if (updateAccount.length <= 0) {
-//             return res.status(400).json({ "error": "Cannot update account!" });
-//         }
+        if (updateAccount === 'fail') {
+            return res.status(400).json({ "error": "Cannot update account!" });
+        }
 
-//         res.status(200).json({ "message": "Account updated!" });
+        res.status(200).json({ "message": "Account updated!" });
         
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 
-// });
-
+});
 
 module.exports = router;
