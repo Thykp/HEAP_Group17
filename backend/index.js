@@ -1,27 +1,38 @@
-// To run: npm run devstart
-
 const express = require('express');
-
-const thisRouter = require('./router/thisRouter');
-const thatRouter = require('./router/thatRouter');
-
+const path = require('path');
+require('dotenv').config();
+const { FE_ENDPOINT } = process.env;
+const PORT = process.env.PORT || 3000;
+const cors = require('cors');
 const app = express();
+const logger = require('./util/logger');
 
-app.use(express.json());
+app.use(express.json()); 
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(
+  cors({
+    origin: ['http://localhost:5173', FE_ENDPOINT],
+    credentials: true
+  })
+);
 
-const PORT = 3000;
-
-// Health check endpoint
 app.get('/', (req, res) => {
-    return res.status(200).json({
-        message: "Server is up and running"
-    });
+  res.status(200).send('ok');
 });
 
-app.use('/this', thisRouter);
-app.use('/that', thatRouter);
+let apiRouter = require('./api/index');
+app.use('/', apiRouter);
 
-// Start the application
+app.use(function(err, req, res, next) {
+  logger.error(err);
+  res.status(err.status || 500);
+  res.json({
+      message: err.message
+  });
+});
+
 app.listen(PORT, () => {
-    console.log(`Server is listening on port ${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+module.exports = app;

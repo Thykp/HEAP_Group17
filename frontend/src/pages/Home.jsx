@@ -1,19 +1,15 @@
 import { useEffect, useState } from 'react'
+import Taskbar from '../components/Taskbar.jsx'
+import LineGraph from '../components/LineGraph.jsx'
 import Navbar from '../components/Navbar.jsx'
+import Header from '../components/Header.jsx'
+import Dashboard from '../components/Dashboard.jsx'
 
 const Home = () => {
   
-  const current_theme = localStorage.getItem('current_theme');
-  const [theme, setTheme] = useState(current_theme? current_theme : 'light');
-
-  useEffect(() => {
-      localStorage.setItem('current_theme', theme)
-    },[theme]
-  )
-
   return (
-    <div className={`container ${theme}`}>
-      <Navbar theme={theme} setTheme={setTheme} />
+    <div>
+      <Dashboard />
     </div>
   )
 }
