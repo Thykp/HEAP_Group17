@@ -1,29 +1,53 @@
 const { supabase } = require('../database/supabaseClient');
+const userDetailsTable = 'user_details';
 
-async function getUserDetails() {
+async function getUserDetails(uuid) {
     
-    const { data: records, error } = await supabase
-    .from(user_details)
-    .select(`userName, userAge, userHeight, userWeight, userActivity, userDiet, userGoal`)
-    .eq('userName', userName)
+    const { data, error } = await supabase
+    .from(userDetailsTable)
+    .select('uuid, username, age, height, weight, activity, diet, goal')
+    .eq('uuid', uuid)
 
     if (error) {
         throw new Error(error.message)
     };
 
-    return records;
+    if (data.length === 0) {
+        console.log("Nothing found.");
+    };
+
+    console.log(data);
+
+    return data;
     
 }
 
-async function updateUserDetails(userName, userAge, userHeight, userWeight, userActivity, userDiet, userGoal) {
+async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal) {
     
-    const { data: records, error } = await supabase
-    .from(user_details)
-    .update({'userName': userName, 'userAge': userAge, 'userHeight': userHeight, 'userWeight': userWeight, 'userActivity': userActivity, 'userDiet': userDiet, 'userGoal': userGoal}).select();
-    
+    const successMessage = "pass";
+    const failureMessage = "fail";
+
+    const { data, error } = await supabase
+    .from(userDetailsTable)
+    .select('uuid')
+    .eq('uuid', uuid)
 
     if (error) {
         throw new Error(error.message);
+    }
+
+    if (data.length === 0) {
+        return failureMessage;
+    };
+
+    const { data2, error2 } = await supabase
+    .from(userDetailsTable)
+    .update({'username': username, 'age': age, 'height': height, 'weight': weight, 'activity': activity, 'diet': diet, 'goal': goal})
+    .eq('uuid', uuid)
+
+
+    if (error2) {
+        throw new Error(error2.message);
     }
     
     return successMessage;
