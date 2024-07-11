@@ -4,6 +4,7 @@ import LineGraph from '../components/LineGraph.jsx'
 import Navbar from '../components/Navbar.jsx'
 import Header from '../components/Header.jsx'
 import Battlepass from '../components/Battlepasshome.jsx'
+import Timetable from '../components/Timetable.jsx'
 
 const Home = () => {
   
@@ -16,6 +17,7 @@ const Home = () => {
       <Taskbar workouts={workouts} />
       <LineGraph data={data}/>
       <Battlepass/>
+      <Timetable/>
     </div>
   )
 }
