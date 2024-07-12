@@ -73,8 +73,8 @@ const Timetable = () => {
     const fetchWorkoutPlan = async () => {
       try {
         const response = await axios.post('http://localhost:3000/workout', {
-          yearsOfExperience: 20,
-          interest: 'armwrestling',
+          yearsOfExperience: 0,
+          interest: 'calisthenics',
           freeDays: 5,
           height: 1.8,
           weight: 70,
@@ -101,8 +101,10 @@ const Timetable = () => {
         details: exercise.weight > 0 ? `Weight: ${exercise.weight}kg` : 'Bodyweight Exercise',
       }));
     });
+    console.log(transformed);
     return transformed;
   };  
+  
 
   const handleMouseEnter = (event) => {
     setHoveredEvent(event);

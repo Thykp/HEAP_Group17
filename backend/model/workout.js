@@ -26,7 +26,8 @@ async function generateWorkout(
           They are free to work out on ${freeDays} days in a week, strictly excluding rest days. 
           They are currently ${height} meters tall and ${weight} kg heavy, and would like to get to ${targetWeight}kg.
           If the exercise is a bodyweight exercise, set the weight to 0. 
-          Do not include any timed exercises in the workout plan. 
+          Do not ever, under any circumstances whatsoever, include any form of exercises requiring an isometric hold in the workout plan. 
+          Examples of exercises which you should never include are L-sit hold, Hollow body holds, Plank, etc.
           According to the above input, strictly return a workout routine, with strictly ${numberOfExercisesPerDay} exercises per day, in the following json format: 
           This is an example response:
           {
@@ -71,10 +72,10 @@ async function generateWorkout(
       ],
       model: "gpt-3.5-turbo",
     });
-
+  
     const responseContent = completion.choices[0].message.content;
+    console.log(responseContent);
     const parsedContent = JSON.parse(responseContent);
-    console.log(parsedContent);
     return parsedContent;
   } catch (error) {
     console.error('Error generating workout:', error);
