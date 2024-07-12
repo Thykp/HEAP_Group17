@@ -8,13 +8,16 @@ import Battlepass from '../components/Battlepasshome.jsx'
 import Timetable from '../components/Timetable.jsx'
 
 const Home = () => {
+
+  // const workouts = ['Pushups', 'Squats', 'Planks', 'Jumping Jacks'];
+  // const data = [20,30,45,50,60,70,95,150,160,165,170,200];
   
   return (
     <div>
-      <Navbar/>
-      <Taskbar workouts={workouts} />
-      <LineGraph data={data}/>
-      <Battlepass/>
+      {/* <Navbar/> */}
+      {/* <Taskbar workouts={workouts} />
+      <LineGraph data={data}/> */}
+      {/* <Battlepass/> */}
       <Timetable/>
     </div>
   )

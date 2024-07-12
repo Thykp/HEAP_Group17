@@ -61,7 +61,8 @@
 // export default Timetable;
 
 
-import React, { useState, useEffect } from "react"; //with backend (currently empty dk how test)
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const Timetable = () => {
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -71,8 +72,15 @@ const Timetable = () => {
   useEffect(() => {
     const fetchWorkoutPlan = async () => {
       try {
-        const response = await fetch("/api/workout-plan");
-        const data = await response.json();
+        const response = await axios.post('http://localhost:3000/workout', {
+          yearsOfExperience: 20,
+          interest: 'armwrestling',
+          freeDays: 5,
+          height: 1.8,
+          weight: 70,
+          targetWeight: 80
+        });
+        const data = response.data;
         const transformedEvents = transformData(data.workoutPlan.days);
         setEvents(transformedEvents);
       } catch (error) {
@@ -90,11 +98,11 @@ const Timetable = () => {
         id: index,
         time: `${exercise.set} sets x ${exercise.reps} reps`,
         title: exercise.exercise,
-        details: `Weight: ${exercise.weight}kg`,
+        details: exercise.weight > 0 ? `Weight: ${exercise.weight}kg` : 'Bodyweight Exercise',
       }));
     });
     return transformed;
-  };
+  };  
 
   const handleMouseEnter = (event) => {
     setHoveredEvent(event);
@@ -139,3 +147,4 @@ const Timetable = () => {
 };
 
 export default Timetable;
+
