@@ -74,7 +74,6 @@ async function generateWorkout(
 
     const responseContent = completion.choices[0].message.content;
     const parsedContent = JSON.parse(responseContent);
-    console.log(parsedContent);
     return parsedContent;
   } catch (error) {
     console.error('Error generating workout:', error);
