@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
             return res.status(400).json({ "error": "Account does not exist!" });
         }
 
-        res.status(200).json({'message': 'Account retrieved'});
+        res.status(200).json({'message': account});
         
     } catch (error) {
         res.status(500).json({ error: error.message });

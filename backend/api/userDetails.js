@@ -15,8 +15,8 @@ router.get('/', async (req, res) => {
         if (retrieveDetails.length <= 0) {
             return res.status(400).json({ "error": "Details not available!" });
         }
-
-        res.status(200).json({'message': 'Details retrieved'});
+        
+        res.status(200).json({'message': retrieveDetails});
         
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -28,9 +28,9 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
 
     try {
-        const { uuid, username, age, height, weight, activity, diet, goal } = req.body;
+        const { uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight } = req.body;
         
-        const changeDetails = await userDetails.updateUserDetails(uuid, username, age, height, weight, activity, diet, goal);
+        const changeDetails = await userDetails.updateUserDetails(uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight);
                 
         if (changeDetails === 'fail' || changeDetails.length <= 0) {
             return res.status(400).json({ "error": "Cannot change details for some reason!" });
