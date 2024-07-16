@@ -1,11 +1,32 @@
 require('dotenv').config();
+const { supabase } = require('../database/supabaseClient');
 const { OpenAI } = require('openai');
+const userDetailsTable = 'user_details';
 
 const { OPENAI_API_KEY } = process.env;
 
 const openai = new OpenAI({
     apiKey: OPENAI_API_KEY
 });
+
+async function getWorkout(uuid) {
+    
+  const { data, error } = await supabase
+  .from(userDetailsTable)
+  .select('workout')
+  .eq('uuid', uuid)
+
+  if (error) {
+      throw new Error(error.message)
+  };
+
+  if (data.length === 0) {
+      console.log("Nothing found.");
+  };
+
+  return data;
+  
+}
 
 async function generateWorkout(
   yearsOfExperience, 
@@ -26,7 +47,8 @@ async function generateWorkout(
           They are free to work out on ${freeDays} days in a week, strictly excluding rest days. 
           They are currently ${height} meters tall and ${weight} kg heavy, and would like to get to ${targetWeight}kg.
           If the exercise is a bodyweight exercise, set the weight to 0. 
-          Do not include any timed exercises in the workout plan. 
+          Do not ever, under any circumstances whatsoever, include any form of exercises requiring an isometric hold in the workout plan. 
+          Do not include isometric hold exercises such as: L-sit hold, Hollow body holds, Plank, etc.
           According to the above input, strictly return a workout routine, with strictly ${numberOfExercisesPerDay} exercises per day, in the following json format: 
           This is an example response:
           {
@@ -41,10 +63,10 @@ async function generateWorkout(
                     "weight": 15
                   },
                   {
-                    "exercise": "Plank",
+                    "exercise": "Muscle-ups",
                     "set": 3,
-                    "reps": 1,
-                    "duration": 60
+                    "reps": 5,
+                    "weight": 0
                   }
                 ]
               },
@@ -71,8 +93,9 @@ async function generateWorkout(
       ],
       model: "gpt-3.5-turbo",
     });
-
+  
     const responseContent = completion.choices[0].message.content;
+    console.log(responseContent);
     const parsedContent = JSON.parse(responseContent);
     return parsedContent;
   } catch (error) {
@@ -81,4 +104,27 @@ async function generateWorkout(
   }
 }
 
-module.exports = { generateWorkout };
+async function insertWorkout(uuid, workout) {
+    
+  const successMessage = 'pass';
+
+  const { data, error } = await supabase
+  .from(userDetailsTable)
+  .update(
+    { 'workout': workout }
+  )
+  .eq('uuid', uuid);
+
+  if (error) {
+      throw new Error(error.message);
+  };
+  
+  return successMessage;
+}
+
+
+module.exports = { 
+  getWorkout, 
+  generateWorkout, 
+  insertWorkout 
+};

@@ -5,7 +5,7 @@ async function getUserDetails(uuid) {
     
     const { data, error } = await supabase
     .from(userDetailsTable)
-    .select('uuid, username, age, height, weight, activity, diet, goal')
+    .select('uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight')
     .eq('uuid', uuid)
 
     if (error) {
@@ -22,7 +22,7 @@ async function getUserDetails(uuid) {
     
 }
 
-async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal) {
+async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight) {
     
     const successMessage = "pass";
     const failureMessage = "fail";
@@ -42,7 +42,7 @@ async function updateUserDetails(uuid, username, age, height, weight, activity, 
 
     const { data2, error2 } = await supabase
     .from(userDetailsTable)
-    .update({'username': username, 'age': age, 'height': height, 'weight': weight, 'activity': activity, 'diet': diet, 'goal': goal})
+    .update({'username': username, 'age': age, 'height': height, 'weight': weight, 'activity': activity, 'diet': diet, 'goal': goal, 'years_of_experience': years_of_experience, 'interest': interest, 'free_days': free_days, 'target_weight': target_weight})
     .eq('uuid', uuid)
 
 
