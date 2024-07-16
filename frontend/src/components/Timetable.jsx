@@ -73,6 +73,7 @@ const Timetable = () => {
     const fetchWorkoutPlan = async () => {
       try {
         const response = await axios.post('http://localhost:3000/workout', {
+          uuid: 2,
           yearsOfExperience: 0,
           interest: 'calisthenics',
           freeDays: 5,
