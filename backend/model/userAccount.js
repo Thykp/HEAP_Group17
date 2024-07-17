@@ -3,44 +3,40 @@ const userAccountTable = 'user_account';
 const userDetailsTable = 'user_details';
 
 async function getUserAccount(email) {
-    
     const { data, error } = await supabase
-    .from(userAccountTable)
-    .select('password')
-    .eq('email', email)
+        .from(userAccountTable)
+        .select('*')
+        .eq('email', email)
+        .single();
 
     if (error) {
         throw new Error(error.message);
-    };
+    }
 
-    if (data.length === 0) {
-        console.log("No matching user found.");
-    };
-
-    console.log(data);
-    
     return data;
 }
 
 async function verifyPassword(email, password) {
-    
     const { data, error } = await supabase
-    .from(userAccountTable)
-    .select('password')
-    .eq('username', username)
+        .from(userAccountTable)
+        .select('password')
+        .eq('email', email)
+        .single();
 
     if (error) {
         throw new Error(error.message);
-    };
+    }
 
-    if (data.length === 0) {
-        console.log("password is wrong");
-    };
+    if (!data) {
+        return false;
+    }
 
-    console.log(data);
-    
-    return data;
+    const storedPassword = data.password;
+    const isPasswordValid = (password === storedPassword);
+
+    return isPasswordValid;
 }
+
 
 async function insertUserAccount(email, first_name, last_name, password) {
     const { data, error } = await supabase
@@ -112,6 +108,7 @@ async function updateUserAccount(uuid, username, password, email) {
 }
 
 module.exports = {
+    verifyPassword,
     getUserAccount,
     insertUserAccount,
     updateUserAccount

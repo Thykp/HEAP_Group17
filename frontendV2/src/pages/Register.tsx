@@ -7,6 +7,8 @@ import { Input } from "../components/ui/input";
 import { Link } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 
+const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
+
 export default function Register() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -27,7 +29,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/userAccount/register', {
+      const response = await axios.post(`${baseURL}/userAccount/register`, {
         email: formData.email,
         first_name: formData.firstName,
         last_name: formData.lastName,

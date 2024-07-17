@@ -23,23 +23,23 @@ router.get('/', async (req, res) => {
 
 router.post('/login', async (req, res) => {
     try {
-      const { email, password } = req.body;
-  
-      const user = await userAccount.getUserAccount(email);
-      if (!user) {
-        return res.status(400).json({ error: "User not found!" });
-      }
-  
-      const isPasswordValid = await userAccount.verifyPassword(email, password);
-      if (!isPasswordValid) {
-        return res.status(400).json({ error: "Invalid password!" });
-      }
-  
-      res.status(200).json({ message: "Login successful!", user });
+        const { email, password } = req.body;
+        const user = await userAccount.getUserAccount(email);
+        
+        if (!user) {
+            return res.status(400).json({ error: "User not found!" });
+        }
+
+        const isPasswordValid = await userAccount.verifyPassword(email, password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ error: "Invalid password!" });
+        }
+
+        res.status(200).json({ message: "Login successful!", user });
     } catch (error) {
-      res.status(500).json({ error: error.message });
+        res.status(500).json({ error: error.message });
     }
-  });
+});
 
 router.post('/register', async (req, res) => {
 
