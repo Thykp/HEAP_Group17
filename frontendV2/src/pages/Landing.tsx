@@ -5,37 +5,30 @@ import { RiSupabaseFill, RiTailwindCssFill } from "react-icons/ri";
 import { SiTypescript, SiShadcnui } from "react-icons/si";
 import { AiOutlineOpenAI } from "react-icons/ai";
 
-
 export default function Landing() {
+  const handleScroll = (e, targetId) => {
+    e.preventDefault();
+    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white dark:bg-gray-900">
       <div className="w-full px-4 py-6 flex items-center justify-between">
-        <div className="text-2xl font-bold text-gray-900 dark:text-gray-1npm i --save @fortawesome/react-fontawesome@latest00">WorkoutWise</div>
+        <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">WorkoutWise</div>
         <NavigationMenu>
           <NavigationMenuList className="flex gap-4">
             <NavigationMenuLink asChild>
-              <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+              <a href="#welcome" onClick={(e) => handleScroll(e, 'welcome')} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 Home
               </a>
             </NavigationMenuLink>
             <NavigationMenuLink asChild>
-              <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+              <a href="#features" onClick={(e) => handleScroll(e, 'features')} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 Features
               </a>
             </NavigationMenuLink>
             <NavigationMenuLink asChild>
-              <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-                Pricing
-              </a>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <a href="#" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-                Contact
-              </a>
-            </NavigationMenuLink>
-            {/* New Tech Stack Link */}
-            <NavigationMenuLink asChild>
-              <a href="#tech-stack" className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+              <a href="#tech-stack" onClick={(e) => handleScroll(e, 'tech-stack')} className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
                 Tech Stack
               </a>
             </NavigationMenuLink>
@@ -43,7 +36,6 @@ export default function Landing() {
         </NavigationMenu>
       </div>
 
-      {/* Welcome Section */}
       <section id="welcome" className="w-full min-h-screen flex items-center justify-center py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -64,6 +56,7 @@ export default function Landing() {
               </Link>
               <a
                 href="#features"
+                onClick={(e) => handleScroll(e, 'features')}
                 className="inline-flex h-10 items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-sm font-medium shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50 dark:focus-visible:ring-gray-300"
               >
                 Features
@@ -73,7 +66,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Features Section */}
       <section id="features" className="w-full min-h-screen flex items-center justify-center py-12 md:py-24 lg:py-32 bg-white dark:bg-gray-900">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -88,6 +80,7 @@ export default function Landing() {
             <div>
               <a
                 href="#tech-stack"
+                onClick={(e) => handleScroll(e, 'tech-stack')}
                 className="inline-flex items-center justify-center rounded-md bg-gray-900 text-sm font-medium text-gray-50 px-8 py-3 shadow transition-colors hover:bg-gray-900/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
               >
                 Tech Stack
@@ -97,7 +90,6 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Tech Stack Section */}
       <section id="tech-stack" className="w-full min-h-screen flex items-center justify-center py-12 md:py-24 lg:py-32 bg-gray-100 dark:bg-gray-800">
         <div className="container px-4 md:px-6">
           <div className="flex flex-col items-center justify-center space-y-4 text-center">
@@ -167,7 +159,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
 
       {/* Footer */}
       <div className="w-full h-20 flex items-center justify-center border-t text-gray-600 dark:border-gray-800 dark:text-gray-300">
