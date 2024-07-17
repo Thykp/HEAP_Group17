@@ -6,6 +6,12 @@ import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
 import { ChartTooltipContent, ChartTooltip, ChartContainer } from "../components/ui/chart";
 
 export default function Dashboard() {
+
+  const handleScroll = (e, targetId) => {
+    e.preventDefault();
+    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+  };
+
   const [selectedDay, setSelectedDay] = useState("Monday");
   const exercisesByDay = {
     Monday: ["Squats", "Deadlifts", "Bench Press"],
@@ -28,10 +34,10 @@ export default function Dashboard() {
             </a>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#workout" className="text-muted-foreground hover:text-foreground" >
+            <a href="#workout" onClick={(e) => handleScroll(e, 'workout')} className="text-muted-foreground hover:text-foreground" >
               Workout
             </a>
-            <a href="#progress" className="text-muted-foreground hover:text-foreground" >
+            <a href="#progress" onClick={(e) => handleScroll(e, 'progress')} className="text-muted-foreground hover:text-foreground" >
               Progress
             </a>
             <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
@@ -52,7 +58,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold">
               <a href="#workout" className="text-black">Workout Plan</a>
             </h2>
-            <Link to="#" className="text-primary hover:underline" >
+            <Link to="/workout" className="text-primary hover:underline" >
               View Details
             </Link>
           </div>

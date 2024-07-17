@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import { Link } from 'react-router-dom';
 
 export default function Workout() {
   const [selectedDay, setSelectedDay] = useState(null);
@@ -66,6 +67,14 @@ export default function Workout() {
     <div className="flex flex-col h-full w-full bg-background">
       <header className="flex items-center h-16 px-4 md:px-6 border-b bg-card">
         <h1 className="text-2xl font-bold">Weekly Workout Plan</h1>
+        <div className="ml-auto">
+          <Link
+            to="/dashboard"
+            className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+          >
+            Back to Dashboard
+          </Link>
+        </div>
       </header>
       <main className="flex-1 p-4 md:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-4">
