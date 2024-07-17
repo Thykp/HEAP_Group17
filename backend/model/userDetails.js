@@ -1,6 +1,7 @@
 const { supabase } = require('../database/supabaseClient');
 const userDetailsTable = 'user_details';
 
+
 async function getUserDetails(uuid) {
     
     const { data, error } = await supabase

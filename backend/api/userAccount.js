@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userAccount = require("../model/userAccount");
 
+// Outdated
 router.get('/', async (req, res) => {
 
     try {
@@ -60,6 +61,7 @@ router.post('/register', async (req, res) => {
 
 });
 
+// Outdated
 router.post('/update', async (req, res) => {
 
     try {
@@ -79,6 +81,7 @@ router.post('/update', async (req, res) => {
 
 });
 
+// Outdated
 router.post('/', async (req, res) => {
 
     try {
@@ -98,6 +101,7 @@ router.post('/', async (req, res) => {
 
 });
 
+// Outdated
 router.post('/update', async (req, res) => {
 
     try {
