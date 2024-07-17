@@ -21,15 +21,35 @@ router.get('/', async (req, res) => {
 
 });
 
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      const user = await userAccount.getUserAccount(email);
+      if (!user) {
+        return res.status(400).json({ error: "User not found!" });
+      }
+  
+      const isPasswordValid = await userAccount.verifyPassword(email, password);
+      if (!isPasswordValid) {
+        return res.status(400).json({ error: "Invalid password!" });
+      }
+  
+      res.status(200).json({ message: "Login successful!", user });
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  });
+
+router.post('/register', async (req, res) => {
 
     try {
-        const { username, password, email } = req.body;
+        const { email, first_name, last_name, password } = req.body;
         
-        const insertAccount = await userAccount.insertUserAccount(username, password, email);
+        const insertAccount = await userAccount.insertUserAccount(email, first_name, last_name, password);
                 
-        if (insertAccount.length <= 0) {
-            return res.status(400).json({ "error": "Cannot make new account!" });
+        if (!insertAccount) {
+            return res.status(409).json({ "error": "Account already exists!" });
         }
 
         res.status(200).json({ "message": "Account created!" });

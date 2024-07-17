@@ -2,13 +2,12 @@ const { supabase } = require('../database/supabaseClient');
 const userAccountTable = 'user_account';
 const userDetailsTable = 'user_details';
 
-async function getUserAccount(username, password) {
+async function getUserAccount(email) {
     
     const { data, error } = await supabase
     .from(userAccountTable)
-    .select('username, password')
-    .eq('username', username)
-    .eq('password', password)
+    .select('password')
+    .eq('email', email)
 
     if (error) {
         throw new Error(error.message);
@@ -23,33 +22,49 @@ async function getUserAccount(username, password) {
     return data;
 }
 
-async function insertUserAccount(username, password, email) {
+async function verifyPassword(email, password) {
     
-    const successMessage = 'pass';
-
     const { data, error } = await supabase
     .from(userAccountTable)
-    .insert([
-      { username: username, password: password, email: email }
-    ]);
+    .select('password')
+    .eq('username', username)
 
     if (error) {
         throw new Error(error.message);
     };
-    
-    // When I create a new user account, I also want to create his corresponding user details
-    const { data2, error2 } = await supabase
-    .from(userDetailsTable)
-    .insert([
-      { username: username, age: null, height: null, weight: null, activity: null, diet: null, goal: null }
-    ]);
 
-
-    if (error2) {
-        throw new Error(error2.message);
+    if (data.length === 0) {
+        console.log("password is wrong");
     };
+
+    console.log(data);
     
-    return successMessage;
+    return data;
+}
+
+async function insertUserAccount(email, first_name, last_name, password) {
+    const { data, error } = await supabase
+        .from(userAccountTable)
+        .select('email')
+        .eq('email', email);
+
+    if (error) {
+        throw new Error(error.message);
+    }
+
+    if (data.length > 0) {
+        return false;
+    }
+
+    const { data: insertedData, error: insertError } = await supabase
+        .from(userAccountTable)
+        .insert([{ email, first_name, last_name, password }]);
+
+    if (insertError) {
+        throw new Error(insertError.message);
+    }
+
+    return true;
 }
 
 async function updateUserAccount(uuid, username, password, email) {
