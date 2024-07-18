@@ -5,7 +5,7 @@ const userDetailsTable = 'user_details';
 async function getUserAccount(email) {
     const { data, error } = await supabase
         .from(userAccountTable)
-        .select('*')
+        .select('id, email, password')
         .eq('email', email)
         .single();
 

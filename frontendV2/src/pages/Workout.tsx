@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Workout() {
+  const location = useLocation();
+  const { user, uuid } = location.state || {};
+
   const [selectedDay, setSelectedDay] = useState(null);
   const [exercises, setExercises] = useState({
     Monday: [

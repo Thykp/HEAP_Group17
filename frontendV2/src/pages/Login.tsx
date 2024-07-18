@@ -23,7 +23,7 @@ export default function Login() {
 
       const { user } = response.data;
       console.log('Login successful!', user);
-      navigate('/dashboard', { state: { user } });
+      navigate('/dashboard', { state: { user, uuid: user.uuid } });
     } catch (err) {
       if (axios.isAxiosError(err) && err.response) {
         setError(err.response.data.error);

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const workout = require('../model/workout');
 const userDetails = require("../model/userDetails");
+const { message } = require('telegraf/filters');
 
 
 router.get('/', async (req, res) => {
@@ -81,6 +82,36 @@ router.post('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  
+});
+
+router.post('/test', async (req, res) => {
+
+  try {
+    
+    const { yearsOfExperience, interest, freeDays, height, weight, targetWeight, numberOfExercisesPerDay } = req.body;
+
+    const workoutPlan = await workout.generateWorkout(
+      yearsOfExperience, 
+      interest, 
+      freeDays, 
+      height, 
+      weight, 
+      targetWeight,
+      numberOfExercisesPerDay
+    );
+    console.log("Workout plan generated!");
+    console.log(workoutPlan);
+
+    res.status(200).json({ 
+      message: "SUCCESS"
+    });
+
+      
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+
 });
 
 module.exports = router;

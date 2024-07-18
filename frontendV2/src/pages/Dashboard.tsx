@@ -1,11 +1,14 @@
 import { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
 import { ChartTooltipContent, ChartTooltip, ChartContainer } from "../components/ui/chart";
 
 export default function Dashboard() {
+  const location = useLocation();
+  const { user, uuid } = location.state || {};
+  // console.log( user, uuid );
 
   const handleScroll = (e, targetId) => {
     e.preventDefault();
@@ -34,15 +37,17 @@ export default function Dashboard() {
             </a>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#workout" onClick={(e) => handleScroll(e, 'workout')} className="text-muted-foreground hover:text-foreground" >
+            <a href="#workout" onClick={(e) => handleScroll(e, 'workout')} className="text-muted-foreground hover:text-foreground">
               Workout
             </a>
-            <a href="#progress" onClick={(e) => handleScroll(e, 'progress')} className="text-muted-foreground hover:text-foreground" >
+            <a href="#progress" onClick={(e) => handleScroll(e, 'progress')} className="text-muted-foreground hover:text-foreground">
               Progress
             </a>
-            <Button variant="ghost" className="text-muted-foreground hover:text-foreground">
-              Generate Workout
-            </Button>
+            <Link to="/generate" className="text-muted-foreground hover:text-foreground">
+              <Button variant="ghost">
+                Generate Workout
+              </Button>
+            </Link>
           </nav>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" className="rounded-full">
@@ -58,7 +63,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold">
               <a href="#workout" className="text-black">Workout Plan</a>
             </h2>
-            <Link to="/workout" className="text-primary hover:underline" >
+            <Link to="/workout" className="text-primary hover:underline">
               View Details
             </Link>
           </div>
@@ -68,85 +73,23 @@ export default function Dashboard() {
             </CardHeader>
             <CardContent className="grid gap-4">
               <div className="grid grid-cols-2 gap-4">
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Monday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Monday")}
-                >
-                  <h3 className="text-lg font-medium">Monday</h3>
-                  <p className="text-muted-foreground">
-                    Strength Training <br />
-                    60 mins
-                  </p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Tuesday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Tuesday")}
-                >
-                  <h3 className="text-lg font-medium">Tuesday</h3>
-                  <p className="text-muted-foreground">
-                    Cardio <br />
-                    45 mins
-                  </p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Wednesday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Wednesday")}
-                >
-                  <h3 className="text-lg font-medium">Wednesday</h3>
-                  <p className="text-muted-foreground">Rest Day</p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Thursday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Thursday")}
-                >
-                  <h3 className="text-lg font-medium">Thursday</h3>
-                  <p className="text-muted-foreground">
-                    Strength Training <br />
-                    60 mins
-                  </p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Friday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Friday")}
-                >
-                  <h3 className="text-lg font-medium">Friday</h3>
-                  <p className="text-muted-foreground">
-                    Cardio <br />
-                    45 mins
-                  </p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Saturday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Saturday")}
-                >
-                  <h3 className="text-lg font-medium">Saturday</h3>
-                  <p className="text-muted-foreground">Rest Day</p>
-                </div>
-                <div
-                  className={`bg-muted rounded-md p-4 cursor-pointer ${
-                    selectedDay === "Sunday" ? "bg-primary text-primary-foreground" : ""
-                  }`}
-                  onClick={() => setSelectedDay("Sunday")}
-                >
-                  <h3 className="text-lg font-medium">Sunday</h3>
-                  <p className="text-muted-foreground">Rest Day</p>
-                </div>
+                {Object.keys(exercisesByDay).map((day) => (
+                  <div
+                    key={day}
+                    className={`bg-muted rounded-md p-4 cursor-pointer ${selectedDay === day ? "bg-primary text-primary-foreground" : ""}`}
+                    onClick={() => setSelectedDay(day)}
+                  >
+                    <h3 className="text-lg font-medium">{day}</h3>
+                    <p className="text-muted-foreground">
+                      {day === "Wednesday" || day === "Saturday" || day === "Sunday" ? "Rest Day" : day === "Monday" || day === "Thursday" ? "Strength Training" : "Cardio"} <br />
+                      {day === "Wednesday" || day === "Saturday" || day === "Sunday" ? "" : day === "Monday" || day === "Thursday" ? "60 mins" : "45 mins"}
+                    </p>
+                  </div>
+                ))}
               </div>
               <div>
                 <h3 className="text-lg font-medium">Exercises</h3>
-                <ul className="list-none pl-0 text-muted-foreground"> {/* Remove bullet points */}
+                <ul className="list-none pl-0 text-muted-foreground">
                   {exercisesByDay[selectedDay].map((exercise, index) => (
                     <li key={index}>{exercise}</li>
                   ))}
@@ -160,7 +103,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold">
               <a href="#progress" className="text-black">Progress</a>
             </h2>
-            <Link to="#" className="text-primary hover:underline" >
+            <Link to="#" className="text-primary hover:underline">
               View Details
             </Link>
           </div>
