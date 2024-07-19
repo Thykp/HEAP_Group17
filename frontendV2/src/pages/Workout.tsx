@@ -5,6 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Workout() {
   const location = useLocation();
   const { user, uuid } = location.state || {};
+  console.log(user, uuid)
 
   const [selectedDay, setSelectedDay] = useState(null);
   const [exercises, setExercises] = useState({

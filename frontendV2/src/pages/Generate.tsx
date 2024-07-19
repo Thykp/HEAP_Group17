@@ -1,14 +1,25 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from 'react-router-dom';
+import axios from "axios";
 import { Button } from "../components/ui/button";
 import { Label } from "../components/ui/label";
 import { Input } from "../components/ui/input";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../components/ui/select";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
 
-export default function Component() {
+export default function Generate() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { user, uuid } = location.state || {};
+
+  useEffect(() => {
+    console.log('Location State in Generate:', location.state);
+    if (!user || !uuid) {
+      navigate("/login");
+    }
+  }, [user, uuid, navigate]);
+
   const [formData, setFormData] = useState({
     yearsExperience: "",
     interests: "",
@@ -21,8 +32,6 @@ export default function Component() {
   const [showWorkoutPlan, setShowWorkoutPlan] = useState(false);
   const [loading, setLoading] = useState(false);
   const [detailsEntered, setDetailsEntered] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,7 +67,6 @@ export default function Component() {
     };
     setWorkoutPlan(plan);
     setShowWorkoutPlan(true);
-    navigate("/workout");
   };
 
   return (
@@ -66,7 +74,7 @@ export default function Component() {
       <Button
         variant="ghost"
         className="absolute top-4 left-4 rounded-full p-2"
-        onClick={() => navigate("/dashboard")}
+        onClick={() => navigate("/dashboard", { state: { user, uuid } })}
       >
         <ArrowLeftIcon className="h-5 w-5" />
       </Button>

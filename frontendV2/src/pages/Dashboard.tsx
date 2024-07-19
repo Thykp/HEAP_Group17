@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from "../components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
@@ -7,8 +7,15 @@ import { ChartTooltipContent, ChartTooltip, ChartContainer } from "../components
 
 export default function Dashboard() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, uuid } = location.state || {};
-  // console.log( user, uuid );
+
+  useEffect(() => {
+    console.log('Location State:', location.state);
+    if (!user || !uuid) {
+      navigate("/login");
+    }
+  }, [user, uuid, navigate]);
 
   const handleScroll = (e, targetId) => {
     e.preventDefault();
@@ -43,7 +50,7 @@ export default function Dashboard() {
             <a href="#progress" onClick={(e) => handleScroll(e, 'progress')} className="text-muted-foreground hover:text-foreground">
               Progress
             </a>
-            <Link to="/generate" className="text-muted-foreground hover:text-foreground">
+            <Link to="/generate" state={{ user, uuid }} className="text-muted-foreground hover:text-foreground">
               <Button variant="ghost">
                 Generate Workout
               </Button>
@@ -63,7 +70,13 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold">
               <a href="#workout" className="text-black">Workout Plan</a>
             </h2>
-            <Link to="/workout" className="text-primary hover:underline">
+            <Link 
+              to={{ 
+                pathname: "/workout", 
+                state: { user, uuid } 
+              }} 
+              className="text-primary hover:underline"
+            >
               View Details
             </Link>
           </div>
