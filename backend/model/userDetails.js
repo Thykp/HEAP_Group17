@@ -22,6 +22,20 @@ async function getUserDetails(uuid) {
     
 }
 
+async function insertUserDetails(uuid, height, weight, years_of_experience, interest, free_days, target_weight) {
+
+    const { data, error } = await supabase
+    .from(userDetailsTable)
+    .upsert({uuid, height, weight, years_of_experience, interest, free_days, target_weight}, { onConflict: ['uuid'] })
+
+    if (error) {
+        throw new Error(error.message)
+    };
+
+    return data;
+
+}
+
 async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight) {
     
     const successMessage = "pass";
@@ -55,5 +69,6 @@ async function updateUserDetails(uuid, username, age, height, weight, activity, 
 
 module.exports = {
     getUserDetails,
+    insertUserDetails,
     updateUserDetails
 }

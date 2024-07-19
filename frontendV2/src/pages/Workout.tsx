@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
-import { Link, useLocation } from 'react-router-dom';
 
 export default function Workout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, uuid } = location.state || {};
   console.log(user, uuid)
+
+  useEffect(() => {
+    console.log('Location State in Generate:', location.state);
+    if (!user || !uuid) {
+      navigate("/login");
+    }
+  }, [user, uuid, navigate]);
 
   const [selectedDay, setSelectedDay] = useState(null);
   const [exercises, setExercises] = useState({
@@ -74,6 +82,7 @@ export default function Workout() {
         <div className="ml-auto">
           <Link
             to="/dashboard"
+            state={{ user, uuid }}
             className="inline-flex h-9 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
           >
             Back to Dashboard

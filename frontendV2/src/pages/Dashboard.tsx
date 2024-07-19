@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { Button } from "../components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
 import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
@@ -9,28 +10,43 @@ export default function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, uuid } = location.state || {};
+  const [exercisesByDay, setExercisesByDay] = useState({});
+  const [selectedDay, setSelectedDay] = useState("Monday");
+
+  // const [selectedDay, setSelectedDay] = useState("Monday");
+  // const exercisesByDay = {
+  //   Monday: ["Squats", "Deadlifts", "Bench Press"],
+  //   Tuesday: ["Jumping Jacks", "Burpees", "Rowing"],
+  //   Wednesday: ["Rest Day"],
+  //   Thursday: ["Overhead Press", "Squats", "Deadlifts"],
+  //   Friday: ["Jumping Jacks", "Burpees", "Rowing"],
+  //   Saturday: ["Rest Day"],
+  //   Sunday: ["Rest Day"],
+  // };
 
   useEffect(() => {
     console.log('Location State:', location.state);
     if (!user || !uuid) {
       navigate("/login");
+    } else {
+      // Fetch workout data
+      axios.get('/api/workout', { params: { uuid } })
+        .then(response => {
+          if (response.data.workout) {
+            setExercisesByDay(response.data.workout);
+          } else {
+            console.error('No workout data received');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching workout data:', error);
+        });
     }
   }, [user, uuid, navigate]);
 
   const handleScroll = (e, targetId) => {
     e.preventDefault();
     document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const [selectedDay, setSelectedDay] = useState("Monday");
-  const exercisesByDay = {
-    Monday: ["Squats", "Deadlifts", "Bench Press"],
-    Tuesday: ["Jumping Jacks", "Burpees", "Rowing"],
-    Wednesday: ["Rest Day"],
-    Thursday: ["Overhead Press", "Squats", "Deadlifts"],
-    Friday: ["Jumping Jacks", "Burpees", "Rowing"],
-    Saturday: ["Rest Day"],
-    Sunday: ["Rest Day"],
   };
 
   return (
@@ -70,13 +86,7 @@ export default function Dashboard() {
             <h2 className="text-2xl font-bold">
               <a href="#workout" className="text-black">Workout Plan</a>
             </h2>
-            <Link 
-              to={{ 
-                pathname: "/workout", 
-                state: { user, uuid } 
-              }} 
-              className="text-primary hover:underline"
-            >
+            <Link to="/workout" state={{ user, uuid }} className="text-primary hover:underline">
               View Details
             </Link>
           </div>
@@ -103,9 +113,9 @@ export default function Dashboard() {
               <div>
                 <h3 className="text-lg font-medium">Exercises</h3>
                 <ul className="list-none pl-0 text-muted-foreground">
-                  {exercisesByDay[selectedDay].map((exercise, index) => (
+                  {exercisesByDay[selectedDay]?.map((exercise, index) => (
                     <li key={index}>{exercise}</li>
-                  ))}
+                  )) || <li>No workout generated! Head over to Generate Workout to get started!</li>}
                 </ul>
               </div>
             </CardContent>

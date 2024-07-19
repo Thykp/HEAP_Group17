@@ -21,12 +21,12 @@ export default function Generate() {
   }, [user, uuid, navigate]);
 
   const [formData, setFormData] = useState({
-    yearsExperience: "",
-    interests: "",
-    freeDays: "",
+    years_of_experience: "",
+    interest: "",
+    free_days: "",
     height: "",
     weight: "",
-    targetWeight: "",
+    target_weight: "",
   });
   const [workoutPlan, setWorkoutPlan] = useState(null);
   const [showWorkoutPlan, setShowWorkoutPlan] = useState(false);
@@ -40,9 +40,10 @@ export default function Generate() {
   const handleEnterDetails = async () => {
     setLoading(true);
     try {
-      const response = await axios.post(`${baseURL}/userDetails`, formData);
+      console.log({...formData});
+      const response = await axios.post(`${baseURL}/userDetails/insert`, { ...formData, uuid });
       if (response.status === 200) {
-        setDetailsEntered(true);
+        console.log("success");
       }
     } catch (error) {
       console.error("Error entering details:", error);
@@ -85,24 +86,24 @@ export default function Generate() {
         </div>
         <div className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="yearsExperience">Years of Experience</Label>
+            <Label htmlFor="years_of_experience">Years of Experience</Label>
             <Input
-              id="yearsExperience"
-              name="yearsExperience"
+              id="years_of_experience"
+              name="years_of_experience"
               type="number"
               min="0"
-              value={formData.yearsExperience}
+              value={formData.years_of_experience}
               onChange={handleInputChange}
               placeholder="Enter your years of experience"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="interests">Interests</Label>
+            <Label htmlFor="interest">Interests</Label>
             <Select
-              id="interests"
-              name="interests"
-              value={formData.interests}
-              onValueChange={(value) => setFormData({ ...formData, interests: value })}
+              id="interest"
+              name="interest"
+              value={formData.interest}
+              onValueChange={(value) => setFormData({ ...formData, interest: value })}
             >
               <SelectTrigger>
                 <SelectValue placeholder="Select your interests" />
@@ -118,20 +119,20 @@ export default function Generate() {
             </Select>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="freeDays">Free Days</Label>
+            <Label htmlFor="free_days">Free Days</Label>
             <Input
-              id="freeDays"
-              name="freeDays"
+              id="free_days"
+              name="free_days"
               type="number"
               min="0"
               max="7"
-              value={formData.freeDays}
+              value={formData.free_days}
               onChange={handleInputChange}
               placeholder="Enter your free days per week"
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="height">Height (cm)</Label>
+            <Label htmlFor="height">Height (m)</Label>
             <Input
               id="height"
               name="height"
@@ -155,13 +156,13 @@ export default function Generate() {
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="targetWeight">Target Weight (kg)</Label>
+            <Label htmlFor="target_weight">Target Weight (kg)</Label>
             <Input
-              id="targetWeight"
-              name="targetWeight"
+              id="target_weight"
+              name="target_weight"
               type="number"
               min="0"
-              value={formData.targetWeight}
+              value={formData.target_weight}
               onChange={handleInputChange}
               placeholder="Enter your target weight in kilograms"
             />
@@ -169,50 +170,9 @@ export default function Generate() {
         </div>
         <div className="flex flex-col gap-2">
           <Button onClick={handleEnterDetails} className="w-full" disabled={loading}>
-            {loading ? "Loading..." : "Enter Details"}
-          </Button>
-          <Button
-            onClick={generateWorkoutPlan}
-            className="w-full"
-            disabled={
-              !detailsEntered ||
-              !formData.yearsExperience ||
-              !formData.interests ||
-              !formData.freeDays ||
-              !formData.height ||
-              !formData.weight ||
-              !formData.targetWeight
-            }
-          >
-            Generate Workout
+            {loading ? "Loading..." : "Generate Workout"}
           </Button>
         </div>
-        {showWorkoutPlan && (
-          <div className="bg-muted rounded-lg p-6 space-y-4">
-            <div>
-              <h2 className="text-2xl font-bold">Your Workout Plan</h2>
-              <p className="text-muted-foreground">Based on your inputs, here's your personalized workout plan:</p>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-bold">Exercises</h3>
-              <ul className="space-y-1">
-                {workoutPlan.exercises.map((exercise, index) => (
-                  <li key={index}>
-                    {exercise.name} - {exercise.sets} sets of {exercise.reps} reps
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="space-y-2">
-              <h3 className="text-lg font-bold">Recommendations</h3>
-              <ul className="space-y-1">
-                {workoutPlan.recommendations.map((recommendation, index) => (
-                  <li key={index}>{recommendation}</li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
