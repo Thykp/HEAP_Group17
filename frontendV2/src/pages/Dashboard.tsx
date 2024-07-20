@@ -140,7 +140,7 @@ export default function Dashboard() {
                     <p className="text-muted-foreground">
                       {exercisesByDay[day].length === 0 ? "Rest Day" : ""} 
                       <br />
-                      {exercisesByDay[day].length === 0 ? "" : (day === "Monday" || day === "Thursday" ? "60 mins" : "45 mins")}
+                      {exercisesByDay[day].length === 0 ? "" : (day === "Monday" || day === "Thursday")}
                     </p>
                   </div>
                 ))}
