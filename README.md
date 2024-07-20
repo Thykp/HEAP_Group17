@@ -14,6 +14,11 @@ Form to generate workout:
 Sample workout:
 <img width="1710" alt="Screenshot 2024-07-20 at 4 07 57 PM" src="https://github.com/user-attachments/assets/63af9e45-70eb-4dae-be13-75c2ced04e14">
 
+Tech Stack:
+Frontend: React, Tailwind css, Javascript, Typescript
+Backend: Nodejs, Expressjs, Javascript
+Database: Supabase
+External API and Tools: OpenAI API, Shadcn/UI
 
 To Run Locally:
 
