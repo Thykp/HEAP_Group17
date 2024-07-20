@@ -5,7 +5,7 @@ async function getUserDetails(uuid) {
     
     const { data, error } = await supabase
     .from(userDetailsTable)
-    .select('uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight')
+    .select('uuid, height, weight, years_of_experience, interest, free_days, target_weight')
     .eq('uuid', uuid)
 
     if (error) {

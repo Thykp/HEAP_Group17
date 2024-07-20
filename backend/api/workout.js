@@ -71,7 +71,7 @@ router.post('/', async (req, res) => {
     
     const workoutInserted = await workout.insertWorkout(uuid, workoutPlan);
 
-    console.log("Workout plan added successfully!");
+    console.log("Workout plan added successfully!", workoutPlan);
 
     res.status(200).json({ 
       message: "Workout plan added successfully!", 

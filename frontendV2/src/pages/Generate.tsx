@@ -28,10 +28,7 @@ export default function Generate() {
     weight: "",
     target_weight: "",
   });
-  const [workoutPlan, setWorkoutPlan] = useState(null);
-  const [showWorkoutPlan, setShowWorkoutPlan] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [detailsEntered, setDetailsEntered] = useState(false);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -43,31 +40,14 @@ export default function Generate() {
       console.log({...formData});
       const response = await axios.post(`${baseURL}/userDetails/insert`, { ...formData, uuid });
       if (response.status === 200) {
-        console.log("success");
+        console.log("Details saved successfully");
+        navigate("/workout", { state: { user, uuid } });
       }
     } catch (error) {
       console.error("Error entering details:", error);
     } finally {
       setLoading(false);
     }
-  };
-
-  const generateWorkoutPlan = () => {
-    const plan = {
-      exercises: [
-        { name: "Squats", sets: 3, reps: 12 },
-        { name: "Bench Press", sets: 4, reps: 10 },
-        { name: "Deadlifts", sets: 3, reps: 8 },
-        { name: "Shoulder Press", sets: 4, reps: 12 },
-      ],
-      recommendations: [
-        "Aim for 3-4 workouts per week",
-        "Increase protein intake to support muscle growth",
-        "Stay hydrated and get enough sleep",
-      ],
-    };
-    setWorkoutPlan(plan);
-    setShowWorkoutPlan(true);
   };
 
   return (
