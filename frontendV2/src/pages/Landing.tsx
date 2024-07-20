@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react';
 import { NavigationMenu, NavigationMenuList, NavigationMenuLink } from "../components/ui/navigation-menu";
 import { Link } from 'react-router-dom';
-import { FaReact, FaNodeJs, FaJsSquare, FaCss3Alt } from 'react-icons/fa';
+import { FaReact, FaNodeJs, FaJsSquare } from 'react-icons/fa';
 import { CiDumbbell } from "react-icons/ci";
 import { RiSupabaseFill, RiTailwindCssFill } from "react-icons/ri";
 import { SiTypescript, SiShadcnui, SiVite } from "react-icons/si";
