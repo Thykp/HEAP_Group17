@@ -234,7 +234,7 @@ export default function Landing() {
               </Avatar>
               <div className="grid gap-1 text-center">
                 <div className="text-lg font-semibold">Nathan</div>
-                <div className="text-sm text-muted-foreground">Consultant</div>
+                <div className="text-sm text-muted-foreground">QA + Scrum</div>
                 <p className="text-sm text-muted-foreground">
 
                 </p>
