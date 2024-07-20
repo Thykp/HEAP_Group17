@@ -2,6 +2,9 @@ WorkoutWise:
 
 A Generative AI Workout tool that helps you to generate a curated workout plan based off your inputs and our trained model.
 
+Deployed Link:
+https://workout-wise-frontend.vercel.app/
+
 Landing Page:
 <img width="1710" alt="Screenshot 2024-07-20 at 4 05 14 PM" src="https://github.com/user-attachments/assets/8b7f5704-8287-4d6d-8495-56b77e582c22">
 
@@ -14,11 +17,19 @@ Form to generate workout:
 Sample workout:
 <img width="1710" alt="Screenshot 2024-07-20 at 4 07 57 PM" src="https://github.com/user-attachments/assets/63af9e45-70eb-4dae-be13-75c2ced04e14">
 
+
 Tech Stack:
-Frontend: React, Tailwind css, Javascript, Typescript
-Backend: Nodejs, Expressjs, Javascript
-Database: Supabase
-External API and Tools: OpenAI API, Shadcn/UI
+Frontend: React, Tailwind css, Javascript, Typescript <br>
+Backend: Nodejs, Expressjs, Javascript <br>
+Database: Supabase <br>
+External API and Tools: OpenAI API, Shadcn/UI <br>
+
+
+Security Measures:
+JWT token (deprecated/unfinished) <br>
+State management check + redirect to login if !uuid <br>
+All data is passed through req.body and not url params <br>
+All confidential keys are in .env <br>
 
 To Run Locally:
 
