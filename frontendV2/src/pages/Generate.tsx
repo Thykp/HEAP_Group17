@@ -14,7 +14,6 @@ export default function Generate() {
   const { user, uuid } = location.state || {};
 
   useEffect(() => {
-    console.log('Location State in Generate:', location.state);
     if (!user || !uuid) {
       navigate("/login");
     }
@@ -37,14 +36,13 @@ export default function Generate() {
   const handleEnterDetails = async () => {
     setLoading(true);
     try {
-      console.log({...formData});
-      const response = await axios.post(`${baseURL}/userDetails/insert`, { ...formData, uuid });
+      await axios.post(`${baseURL}/userDetails/insert`, { ...formData, uuid });
+      const response = await axios.post(`${baseURL}/workout`, { uuid });
       if (response.status === 200) {
-        console.log("Details saved successfully");
         navigate("/workout", { state: { user, uuid } });
       }
     } catch (error) {
-      console.error("Error entering details:", error);
+      console.error("Error generating workout plan:", error);
     } finally {
       setLoading(false);
     }
@@ -120,7 +118,7 @@ export default function Generate() {
               min="0"
               value={formData.height}
               onChange={handleInputChange}
-              placeholder="Enter your height in centimeters"
+              placeholder="Enter your height in meters"
             />
           </div>
           <div className="grid gap-2">
@@ -174,26 +172,6 @@ function ArrowLeftIcon(props) {
     >
       <path d="m12 19-7-7 7-7" />
       <path d="M19 12H5" />
-    </svg>
-  );
-}
-
-function XIcon(props) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
     </svg>
   );
 }
