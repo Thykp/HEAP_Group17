@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const workout = require('../model/workout');
 const userDetails = require("../model/userDetails");
+const { message } = require('telegraf/filters');
 
 
 router.get('/', async (req, res) => {
@@ -11,12 +12,13 @@ router.get('/', async (req, res) => {
       const { uuid } = req.body;
       
       const retrieveWorkout = await workout.getWorkout(uuid);
+      const workout = retrieveWorkout[0]['workout'];
 
-      if (retrieveWorkout[0]['workout'] === null) {
+      if (workout === null) {
           return res.status(400).json({ "error": "No workout added yet!" });
       }
 
-      res.status(200).json({'message': retrieveWorkout});
+      res.status(200).json({ workout });
       
   } catch (error) {
       res.status(500).json({ error: error.message });
@@ -69,7 +71,7 @@ router.post('/', async (req, res) => {
     
     const workoutInserted = await workout.insertWorkout(uuid, workoutPlan);
 
-    console.log("Workout plan added successfully!");
+    console.log("Workout plan added successfully!", workoutPlan);
 
     res.status(200).json({ 
       message: "Workout plan added successfully!", 
@@ -81,6 +83,36 @@ router.post('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+  
+});
+
+router.post('/test', async (req, res) => {
+
+  try {
+    
+    const { yearsOfExperience, interest, freeDays, height, weight, targetWeight, numberOfExercisesPerDay } = req.body;
+
+    const workoutPlan = await workout.generateWorkout(
+      yearsOfExperience, 
+      interest, 
+      freeDays, 
+      height, 
+      weight, 
+      targetWeight,
+      numberOfExercisesPerDay
+    );
+    console.log("Workout plan generated!");
+    console.log(workoutPlan);
+
+    res.status(200).json({ 
+      message: "SUCCESS"
+    });
+
+      
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+
 });
 
 module.exports = router;

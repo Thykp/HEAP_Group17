@@ -5,6 +5,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Workout from './pages/Workout';
+import Generate from './pages/Generate';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/workout" element={<Workout />} />
+        <Route path="/generate" element={<Generate />} />
       </Routes>
     </Router>
   );

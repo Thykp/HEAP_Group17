@@ -6,7 +6,7 @@ async function getUserDetails(uuid) {
     
     const { data, error } = await supabase
     .from(userDetailsTable)
-    .select('uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight')
+    .select('uuid, height, weight, years_of_experience, interest, free_days, target_weight')
     .eq('uuid', uuid)
 
     if (error) {
@@ -21,6 +21,20 @@ async function getUserDetails(uuid) {
 
     return data;
     
+}
+
+async function insertUserDetails(uuid, height, weight, years_of_experience, interest, free_days, target_weight) {
+
+    const { data, error } = await supabase
+    .from(userDetailsTable)
+    .upsert({uuid, height, weight, years_of_experience, interest, free_days, target_weight}, { onConflict: ['uuid'] })
+
+    if (error) {
+        throw new Error(error.message)
+    };
+
+    return data;
+
 }
 
 async function updateUserDetails(uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight) {
@@ -56,5 +70,6 @@ async function updateUserDetails(uuid, username, age, height, weight, activity, 
 
 module.exports = {
     getUserDetails,
+    insertUserDetails,
     updateUserDetails
 }

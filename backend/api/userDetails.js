@@ -24,13 +24,28 @@ router.get('/', async (req, res) => {
 
 });
 
-
-router.post('/', async (req, res) => {
+router.post('/insert', async (req, res) => {
 
     try {
-        const { uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight } = req.body;
+        console.log(req.body);
+        const { uuid, height, weight, years_of_experience, interest, free_days, target_weight } = req.body;
+
+        const insertDetails = await userDetails.insertUserDetails(uuid, height, weight, years_of_experience, interest, free_days, target_weight);
+
+        res.status(200).json({ "message": "Details inserted!" });
         
-        const changeDetails = await userDetails.updateUserDetails(uuid, username, age, height, weight, activity, diet, goal, years_of_experience, interest, free_days, target_weight);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+
+});
+
+router.post('/update', async (req, res) => {
+
+    try {
+        const { uuid, height, weight, years_of_experience, interest, free_days, target_weight } = req.body;
+        
+        const changeDetails = await userDetails.updateUserDetails(uuid, height, weight, years_of_experience, interest, free_days, target_weight);
                 
         if (changeDetails === 'fail' || changeDetails.length <= 0) {
             return res.status(400).json({ "error": "Cannot change details for some reason!" });
