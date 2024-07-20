@@ -5,25 +5,31 @@ const userDetails = require("../model/userDetails");
 const { message } = require('telegraf/filters');
 
 
-router.get('/', async (req, res) => {
-
+router.post('/retrieve', async (req, res) => {
   try {
+    const { uuid } = req.body;
+    console.log(`Fetching workout for uuid: ${uuid}`);
 
-      const { uuid } = req.body;
-      
-      const retrieveWorkout = await workout.getWorkout(uuid);
-      const workout = retrieveWorkout[0]['workout'];
+    const retrieveWorkout = await workout.getWorkout(uuid);
+    console.log('Retrieved workout:', retrieveWorkout);
 
-      if (workout === null) {
-          return res.status(400).json({ "error": "No workout added yet!" });
-      }
+    if (!retrieveWorkout || retrieveWorkout.length === 0) {
+      return res.status(400).json({ error: "No workout added yet!" });
+    }
 
-      res.status(200).json({ workout });
-      
+    // Safely access the workout data
+    const workoutData = retrieveWorkout[0]?.workout;
+    console.log('Workout data:', workoutData);
+
+    if (!workoutData) {
+      return res.status(400).json({ error: "No workout added yet!" });
+    }
+
+    res.status(200).json({ workout: workoutData });
   } catch (error) {
-      res.status(500).json({ error: error.message });
+    console.error('Error fetching workout:', error);
+    res.status(500).json({ error: error.message });
   }
-
 });
 
 

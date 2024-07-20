@@ -6,23 +6,24 @@ import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card"
 import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
 import { ChartTooltipContent, ChartTooltip, ChartContainer } from "../components/ui/chart";
 
+const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
+
+const initialWorkoutPlan = {
+  Monday: [],
+  Tuesday: [],
+  Wednesday: [],
+  Thursday: [],
+  Friday: [],
+  Saturday: [],
+  Sunday: [],
+};
+
 export default function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, uuid } = location.state || {};
-  const [exercisesByDay, setExercisesByDay] = useState({});
+  const [exercisesByDay, setExercisesByDay] = useState(initialWorkoutPlan);
   const [selectedDay, setSelectedDay] = useState("Monday");
-
-  // const [selectedDay, setSelectedDay] = useState("Monday");
-  // const exercisesByDay = {
-  //   Monday: ["Squats", "Deadlifts", "Bench Press"],
-  //   Tuesday: ["Jumping Jacks", "Burpees", "Rowing"],
-  //   Wednesday: ["Rest Day"],
-  //   Thursday: ["Overhead Press", "Squats", "Deadlifts"],
-  //   Friday: ["Jumping Jacks", "Burpees", "Rowing"],
-  //   Saturday: ["Rest Day"],
-  //   Sunday: ["Rest Day"],
-  // };
 
   useEffect(() => {
     console.log('Location State:', location.state);
@@ -30,24 +31,39 @@ export default function Dashboard() {
       navigate("/login");
     } else {
       // Fetch workout data
-      axios.get('/api/workout', { params: { uuid } })
+      axios.post(`${baseURL}/workout/retrieve`, { uuid })
         .then(response => {
-          if (response.data.workout) {
-            setExercisesByDay(response.data.workout);
-          } else {
-            console.error('No workout data received');
-          }
+          console.log('API Response:', response);
+          const workoutData = response.data.workout;
+          console.log('Workout Data:', workoutData);
+          const formattedWorkoutPlan = formatWorkoutPlan(workoutData);
+          setExercisesByDay(formattedWorkoutPlan);
         })
         .catch(error => {
-          console.error('Error fetching workout data:', error);
+          console.error('Error fetching workout data:', error.response?.data || error.message);
         });
     }
   }, [user, uuid, navigate]);
+
+  const formatWorkoutPlan = (data) => {
+    const plan = { ...initialWorkoutPlan };
+
+    if (data && data.days) {
+      data.days.forEach(day => {
+        plan[day.day_of_week] = day.exercises.map(exercise => exercise.exercise);
+      });
+    }
+
+    return plan;
+  };
 
   const handleScroll = (e, targetId) => {
     e.preventDefault();
     document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Check if all days have no exercises
+  const allDaysRest = Object.values(exercisesByDay).every(exercises => exercises.length === 0);
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -73,10 +89,10 @@ export default function Dashboard() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon" className="rounded-full">
+            {/* <Button variant="ghost" size="icon" className="rounded-full">
               <img src="/placeholder.svg" width="36" height="36" className="rounded-full" alt="Avatar" />
               <span className="sr-only">Toggle user menu</span>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </header>
@@ -104,8 +120,9 @@ export default function Dashboard() {
                   >
                     <h3 className="text-lg font-medium">{day}</h3>
                     <p className="text-muted-foreground">
-                      {day === "Wednesday" || day === "Saturday" || day === "Sunday" ? "Rest Day" : day === "Monday" || day === "Thursday" ? "Strength Training" : "Cardio"} <br />
-                      {day === "Wednesday" || day === "Saturday" || day === "Sunday" ? "" : day === "Monday" || day === "Thursday" ? "60 mins" : "45 mins"}
+                      {exercisesByDay[day].length === 0 ? "Rest Day" : ""} 
+                      <br />
+                      {exercisesByDay[day].length === 0 ? "" : (day === "Monday" || day === "Thursday" ? "60 mins" : "45 mins")}
                     </p>
                   </div>
                 ))}
@@ -113,15 +130,23 @@ export default function Dashboard() {
               <div>
                 <h3 className="text-lg font-medium">Exercises</h3>
                 <ul className="list-none pl-0 text-muted-foreground">
-                  {exercisesByDay[selectedDay]?.map((exercise, index) => (
-                    <li key={index}>{exercise}</li>
-                  )) || <li>No workout generated! Head over to Generate Workout to get started!</li>}
+                  {allDaysRest ? (
+                    <li>No workout generated! Head over to Generate Workout to get started!</li>
+                  ) : (
+                    exercisesByDay[selectedDay]?.length > 0 ? (
+                      exercisesByDay[selectedDay].map((exercise, index) => (
+                        <li key={index}>{exercise}</li>
+                      ))
+                    ) : (
+                      <li>No workout available for this day.</li>
+                    )
+                  )}
                 </ul>
               </div>
             </CardContent>
           </Card>
         </section>
-        <section id="progress" className="grid gap-6">
+        {/* <section id="progress" className="grid gap-6">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold">
               <a href="#progress" className="text-black">Progress</a>
@@ -148,7 +173,7 @@ export default function Dashboard() {
               </CardContent>
             </Card>
           </div>
-        </section>
+        </section> */}
       </main>
     </div>
   );
@@ -176,93 +201,93 @@ function LayoutDashboardIcon(props) {
   );
 }
 
-function LinechartChart(props) {
-  return (
-    <div {...props}>
-      <ChartContainer
-        config={{
-          desktop: {
-            label: "Desktop",
-            color: "hsl(var(--chart-1))",
-          },
-        }}
-      >
-        <LineChart
-          accessibilityLayer
-          data={[
-            { month: "January", desktop: 186 },
-            { month: "February", desktop: 305 },
-            { month: "March", desktop: 237 },
-            { month: "April", desktop: 73 },
-            { month: "May", desktop: 209 },
-            { month: "June", desktop: 214 },
-          ]}
-          margin={{
-            left: 12,
-            right: 12,
-          }}
-        >
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey="month"
-            tickLine={false}
-            axisLine={false}
-            tickMargin={8}
-            tickFormatter={(value) => value.slice(0, 3)}
-          />
-          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-          <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
-        </LineChart>
-      </ChartContainer>
-    </div>
-  );
-}
+// function LinechartChart(props) {
+//   return (
+//     <div {...props}>
+//       <ChartContainer
+//         config={{
+//           desktop: {
+//             label: "Desktop",
+//             color: "hsl(var(--chart-1))",
+//           },
+//         }}
+//       >
+//         <LineChart
+//           accessibilityLayer
+//           data={[
+//             { month: "January", desktop: 186 },
+//             { month: "February", desktop: 305 },
+//             { month: "March", desktop: 237 },
+//             { month: "April", desktop: 73 },
+//             { month: "May", desktop: 209 },
+//             { month: "June", desktop: 214 },
+//           ]}
+//           margin={{
+//             left: 12,
+//             right: 12,
+//           }}
+//         >
+//           <CartesianGrid vertical={false} />
+//           <XAxis
+//             dataKey="month"
+//             tickLine={false}
+//             axisLine={false}
+//             tickMargin={8}
+//             tickFormatter={(value) => value.slice(0, 3)}
+//           />
+//           <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+//           <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
+//         </LineChart>
+//       </ChartContainer>
+//     </div>
+//   );
+// }
 
-function PiechartcustomChart(props) {
-  return (
-    <div {...props}>
-      <ChartContainer
-        config={{
-          visitors: {
-            label: "Visitors",
-          },
-          chrome: {
-            label: "Chrome",
-            color: "hsl(var(--chart-1))",
-          },
-          safari: {
-            label: "Safari",
-            color: "hsl(var(--chart-2))",
-          },
-          firefox: {
-            label: "Firefox",
-            color: "hsl(var(--chart-3))",
-          },
-          edge: {
-            label: "Edge",
-            color: "hsl(var(--chart-4))",
-          },
-          other: {
-            label: "Other",
-            color: "hsl(var(--chart-5))",
-          },
-        }}
-      >
-        <PieChart>
-          <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-          <Pie
-            data={[
-              { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-              { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-              { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-              { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-              { browser: "other", visitors: 90, fill: "var(--color-other)" },
-            ]}
-            dataKey="visitors"
-            nameKey="browser"
-          />
-        </PieChart>
-      </ChartContainer>
-    </div>
-  );
-}
+// function PiechartcustomChart(props) {
+//   return (
+//     <div {...props}>
+//       <ChartContainer
+//         config={{
+//           visitors: {
+//             label: "Visitors",
+//           },
+//           chrome: {
+//             label: "Chrome",
+//             color: "hsl(var(--chart-1))",
+//           },
+//           safari: {
+//             label: "Safari",
+//             color: "hsl(var(--chart-2))",
+//           },
+//           firefox: {
+//             label: "Firefox",
+//             color: "hsl(var(--chart-3))",
+//           },
+//           edge: {
+//             label: "Edge",
+//             color: "hsl(var(--chart-4))",
+//           },
+//           other: {
+//             label: "Other",
+//             color: "hsl(var(--chart-5))",
+//           },
+//         }}
+//       >
+//         <PieChart>
+//           <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
+//           <Pie
+//             data={[
+//               { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+//               { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+//               { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
+//               { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+//               { browser: "other", visitors: 90, fill: "var(--color-other)" },
+//             ]}
+//             dataKey="visitors"
+//             nameKey="browser"
+//           />
+//         </PieChart>
+//       </ChartContainer>
+//     </div>
+//   );
+// }

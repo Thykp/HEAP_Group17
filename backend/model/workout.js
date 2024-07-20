@@ -10,22 +10,23 @@ const openai = new OpenAI({
 });
 
 async function getWorkout(uuid) {
-    
   const { data, error } = await supabase
-  .from(userDetailsTable)
-  .select('workout')
-  .eq('uuid', uuid)
+    .from(userDetailsTable)
+    .select('workout')
+    .eq('uuid', uuid);
 
   if (error) {
-      throw new Error(error.message)
-  };
+    throw new Error(error.message);
+  }
 
-  if (data.length === 0) {
-      console.log("Nothing found.");
-  };
+  console.log('Data from Supabase:', data);
+
+  if (!data || data.length === 0) {
+    console.log("Nothing found.");
+    return [];
+  }
 
   return data;
-  
 }
 
 async function generateWorkout(

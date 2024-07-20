@@ -1,79 +1,66 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
+
+const initialWorkoutPlan = {
+  Monday: [],
+  Tuesday: [],
+  Wednesday: [],
+  Thursday: [],
+  Friday: [],
+  Saturday: [],
+  Sunday: [],
+};
 
 export default function Workout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, uuid } = location.state || {};
-  console.log(user, uuid)
+  console.log(uuid)
+  const [selectedDay, setSelectedDay] = useState(null);
+  const [workoutPlan, setWorkoutPlan] = useState(initialWorkoutPlan);
 
   useEffect(() => {
-    console.log('Location State in Generate:', location.state);
     if (!user || !uuid) {
       navigate("/login");
+      return;
     }
+
+    const fetchWorkoutPlan = async () => {
+      try {
+        const response = await axios.post(`${baseURL}/workout/retrieve`, { uuid });
+        console.log('API Response:', response);
+        const workoutData = response.data.workout;
+        console.log('Workout Data:', workoutData);
+        const formattedWorkoutPlan = formatWorkoutPlan(workoutData);
+        setWorkoutPlan(formattedWorkoutPlan);
+      } catch (error) {
+        console.error("Error fetching workout plan:", error.response?.data || error.message);
+      }
+    };
+
+    fetchWorkoutPlan();
   }, [user, uuid, navigate]);
 
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [exercises, setExercises] = useState({
-    Monday: [
-      { name: "Bench Press", sets: 3, reps: 10 },
-      { name: "Squats", sets: 4, reps: 12 },
-      { name: "Deadlifts", sets: 3, reps: 8 },
-      { name: "Overhead Press", sets: 3, reps: 10 },
-      { name: "Rows", sets: 4, reps: 12 },
-      { name: "Lunges", sets: 3, reps: 10 },
-    ],
-    Tuesday: [
-      { name: "Deadlifts", sets: 3, reps: 8 },
-      { name: "Pull-ups", sets: 4, reps: 10 },
-      { name: "Shoulder Raises", sets: 3, reps: 12 },
-      { name: "Bicep Curls", sets: 3, reps: 10 },
-      { name: "Tricep Extensions", sets: 4, reps: 12 },
-      { name: "Calf Raises", sets: 3, reps: 15 },
-    ],
-    Wednesday: [
-      { name: "Squats", sets: 4, reps: 12 },
-      { name: "Bench Press", sets: 3, reps: 10 },
-      { name: "Lat Pulldowns", sets: 3, reps: 12 },
-      { name: "Leg Press", sets: 4, reps: 10 },
-      { name: "Shoulder Shrugs", sets: 3, reps: 8 },
-      { name: "Crunches", sets: 3, reps: 20 },
-    ],
-    Thursday: [
-      { name: "Deadlifts", sets: 3, reps: 8 },
-      { name: "Overhead Press", sets: 4, reps: 10 },
-      { name: "Rows", sets: 3, reps: 12 },
-      { name: "Lunges", sets: 3, reps: 10 },
-      { name: "Bicep Curls", sets: 4, reps: 12 },
-      { name: "Tricep Extensions", sets: 3, reps: 10 },
-    ],
-    Friday: [
-      { name: "Bench Press", sets: 3, reps: 10 },
-      { name: "Squats", sets: 4, reps: 12 },
-      { name: "Pull-ups", sets: 3, reps: 8 },
-      { name: "Shoulder Raises", sets: 3, reps: 12 },
-      { name: "Calf Raises", sets: 4, reps: 15 },
-      { name: "Crunches", sets: 3, reps: 20 },
-    ],
-    Saturday: [
-      { name: "Deadlifts", sets: 3, reps: 8 },
-      { name: "Leg Press", sets: 4, reps: 10 },
-      { name: "Shoulder Shrugs", sets: 3, reps: 12 },
-      { name: "Bicep Curls", sets: 3, reps: 10 },
-      { name: "Tricep Extensions", sets: 4, reps: 12 },
-      { name: "Lat Pulldowns", sets: 3, reps: 10 },
-    ],
-    Sunday: [
-      { name: "Squats", sets: 4, reps: 12 },
-      { name: "Overhead Press", sets: 3, reps: 10 },
-      { name: "Rows", sets: 3, reps: 12 },
-      { name: "Lunges", sets: 3, reps: 10 },
-      { name: "Pull-ups", sets: 4, reps: 8 },
-      { name: "Calf Raises", sets: 3, reps: 15 },
-    ],
-  });
+  const formatWorkoutPlan = (data) => {
+    const plan = { ...initialWorkoutPlan };
+
+    if (data && data.days) {
+      data.days.forEach(day => {
+        plan[day.day_of_week] = day.exercises.map(exercise => ({
+          name: exercise.exercise,
+          sets: exercise.set,
+          reps: exercise.reps,
+          weight: exercise.weight,
+        }));
+      });
+    }
+
+    return plan;
+  };
 
   return (
     <div className="flex flex-col h-full w-full bg-background">
@@ -91,7 +78,7 @@ export default function Workout() {
       </header>
       <main className="flex-1 p-4 md:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-4">
-          {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, index) => (
+          {Object.keys(workoutPlan).map((day, index) => (
             <Card
               key={index}
               className={`bg-card ${selectedDay === day ? "ring-2 ring-primary" : ""}`}
@@ -101,7 +88,7 @@ export default function Workout() {
                 <CardTitle>{day}</CardTitle>
               </CardHeader>
               <CardContent className="grid gap-6">
-                {exercises[day].slice(0, 3).map((exercise, i) => (
+                {workoutPlan[day].slice(0, 3).map((exercise, i) => (
                   <div key={i} className="grid gap-4">
                     <div className="font-medium">{exercise.name}</div>
                     <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -115,11 +102,11 @@ export default function Workout() {
             </Card>
           ))}
         </div>
-        {selectedDay && (
+        {selectedDay && workoutPlan[selectedDay].length > 0 && (
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-4">{selectedDay} Workouts</h2>
             <div className="grid gap-4">
-              {exercises[selectedDay].map((exercise, i) => (
+              {workoutPlan[selectedDay].map((exercise, i) => (
                 <div key={i} className="flex justify-between">
                   <div className="font-medium">{exercise.name}</div>
                   <div className="text-sm text-muted-foreground">
@@ -128,6 +115,12 @@ export default function Workout() {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+        {selectedDay && workoutPlan[selectedDay].length === 0 && (
+          <div className="mt-4">
+            <h2 className="text-xl font-bold mb-4">{selectedDay} Workouts</h2>
+            <div className="text-muted-foreground">No exercises scheduled for this day.</div>
           </div>
         )}
       </main>
