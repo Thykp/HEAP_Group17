@@ -3,12 +3,25 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Button } from "../components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "../components/ui/card";
-import { CartesianGrid, XAxis, Line, LineChart, Pie, PieChart } from "recharts";
-import { ChartTooltipContent, ChartTooltip, ChartContainer } from "../components/ui/chart";
 
 const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
 
-const initialWorkoutPlan = {
+type DayOfWeek = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
+type Exercise = {
+  exercise: string;
+};
+
+type WorkoutDay = {
+  day_of_week: DayOfWeek;
+  exercises: Exercise[];
+};
+
+type WorkoutData = {
+  days: WorkoutDay[];
+};
+
+const initialWorkoutPlan: Record<DayOfWeek, string[]> = {
   Monday: [],
   Tuesday: [],
   Wednesday: [],
@@ -22,8 +35,8 @@ export default function Dashboard() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, uuid } = location.state || {};
-  const [exercisesByDay, setExercisesByDay] = useState(initialWorkoutPlan);
-  const [selectedDay, setSelectedDay] = useState("Monday");
+  const [exercisesByDay, setExercisesByDay] = useState<Record<DayOfWeek, string[]>>(initialWorkoutPlan);
+  const [selectedDay, setSelectedDay] = useState<DayOfWeek>('Monday');
 
   useEffect(() => {
     console.log('Location State:', location.state);
@@ -34,7 +47,7 @@ export default function Dashboard() {
       axios.post(`${baseURL}/workout/retrieve`, { uuid })
         .then(response => {
           console.log('API Response:', response);
-          const workoutData = response.data.workout;
+          const workoutData: WorkoutData = response.data.workout;
           console.log('Workout Data:', workoutData);
           const formattedWorkoutPlan = formatWorkoutPlan(workoutData);
           setExercisesByDay(formattedWorkoutPlan);
@@ -45,21 +58,26 @@ export default function Dashboard() {
     }
   }, [user, uuid, navigate]);
 
-  const formatWorkoutPlan = (data) => {
-    const plan = { ...initialWorkoutPlan };
+  const formatWorkoutPlan = (data: WorkoutData): Record<DayOfWeek, string[]> => {
+    const plan: Record<DayOfWeek, string[]> = { ...initialWorkoutPlan };
 
     if (data && data.days) {
       data.days.forEach(day => {
-        plan[day.day_of_week] = day.exercises.map(exercise => exercise.exercise);
+        if (day.day_of_week in plan) {
+          plan[day.day_of_week] = day.exercises.map(exercise => exercise.exercise);
+        }
       });
     }
 
     return plan;
   };
 
-  const handleScroll = (e, targetId) => {
+  const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   // Check if all days have no exercises
@@ -116,7 +134,7 @@ export default function Dashboard() {
                   <div
                     key={day}
                     className={`bg-muted rounded-md p-4 cursor-pointer ${selectedDay === day ? "bg-primary text-primary-foreground" : ""}`}
-                    onClick={() => setSelectedDay(day)}
+                    onClick={() => setSelectedDay(day as DayOfWeek)}
                   >
                     <h3 className="text-lg font-medium">{day}</h3>
                     <p className="text-muted-foreground">
@@ -146,40 +164,12 @@ export default function Dashboard() {
             </CardContent>
           </Card>
         </section>
-        {/* <section id="progress" className="grid gap-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold">
-              <a href="#progress" className="text-black">Progress</a>
-            </h2>
-            <Link to="#" className="text-primary hover:underline">
-              View Details
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Weight</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <LinechartChart className="aspect-[9/4]" />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>Body Composition</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <PiechartcustomChart className="aspect-square" />
-              </CardContent>
-            </Card>
-          </div>
-        </section> */}
       </main>
     </div>
   );
 }
 
-function LayoutDashboardIcon(props) {
+function LayoutDashboardIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}
@@ -200,94 +190,3 @@ function LayoutDashboardIcon(props) {
     </svg>
   );
 }
-
-// function LinechartChart(props) {
-//   return (
-//     <div {...props}>
-//       <ChartContainer
-//         config={{
-//           desktop: {
-//             label: "Desktop",
-//             color: "hsl(var(--chart-1))",
-//           },
-//         }}
-//       >
-//         <LineChart
-//           accessibilityLayer
-//           data={[
-//             { month: "January", desktop: 186 },
-//             { month: "February", desktop: 305 },
-//             { month: "March", desktop: 237 },
-//             { month: "April", desktop: 73 },
-//             { month: "May", desktop: 209 },
-//             { month: "June", desktop: 214 },
-//           ]}
-//           margin={{
-//             left: 12,
-//             right: 12,
-//           }}
-//         >
-//           <CartesianGrid vertical={false} />
-//           <XAxis
-//             dataKey="month"
-//             tickLine={false}
-//             axisLine={false}
-//             tickMargin={8}
-//             tickFormatter={(value) => value.slice(0, 3)}
-//           />
-//           <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-//           <Line dataKey="desktop" type="natural" stroke="var(--color-desktop)" strokeWidth={2} dot={false} />
-//         </LineChart>
-//       </ChartContainer>
-//     </div>
-//   );
-// }
-
-// function PiechartcustomChart(props) {
-//   return (
-//     <div {...props}>
-//       <ChartContainer
-//         config={{
-//           visitors: {
-//             label: "Visitors",
-//           },
-//           chrome: {
-//             label: "Chrome",
-//             color: "hsl(var(--chart-1))",
-//           },
-//           safari: {
-//             label: "Safari",
-//             color: "hsl(var(--chart-2))",
-//           },
-//           firefox: {
-//             label: "Firefox",
-//             color: "hsl(var(--chart-3))",
-//           },
-//           edge: {
-//             label: "Edge",
-//             color: "hsl(var(--chart-4))",
-//           },
-//           other: {
-//             label: "Other",
-//             color: "hsl(var(--chart-5))",
-//           },
-//         }}
-//       >
-//         <PieChart>
-//           <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-//           <Pie
-//             data={[
-//               { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-//               { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-//               { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-//               { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-//               { browser: "other", visitors: 90, fill: "var(--color-other)" },
-//             ]}
-//             dataKey="visitors"
-//             nameKey="browser"
-//           />
-//         </PieChart>
-//       </ChartContainer>
-//     </div>
-//   );
-// }
