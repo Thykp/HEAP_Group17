@@ -147,6 +147,10 @@ export default function Landing() {
                     <span className="text-gray-800 dark:text-gray-200">Node.js</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <FaJsSquare className="text-yellow-500 text-2xl" />
+                    <span className="text-gray-800 dark:text-gray-200">JavaScript</span>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                     <RiSupabaseFill className="text-green-600 text-2xl" />
                     <span className="text-gray-800 dark:text-gray-200">Supabase</span>
                   </div>
