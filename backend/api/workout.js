@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const workout = require('../model/workout');
 const userDetails = require("../model/userDetails");
-const { message } = require('telegraf/filters');
-
 
 router.get('/', async (req, res) => {
 
