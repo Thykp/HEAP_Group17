@@ -5,6 +5,7 @@ import { FaReact, FaNodeJs, FaJsSquare, FaCss3Alt } from 'react-icons/fa';
 import { RiSupabaseFill, RiTailwindCssFill } from "react-icons/ri";
 import { SiTypescript, SiShadcnui } from "react-icons/si";
 import { AiOutlineOpenAI } from "react-icons/ai";
+import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
 
 export default function Landing() {
   const handleScroll = (e: MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -164,6 +165,85 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      <section className="w-full py-12 md:py-24 lg:py-32">
+        <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
+          <div className="space-y-3">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Meet the Team</h2>
+            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+              The team behind the creation of this website.
+            </p>
+          </div>
+          <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>CK</AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-center">
+                <div className="text-lg font-semibold">Choon Kiat</div>
+                <div className="text-sm text-muted-foreground">Frontend</div>
+                <p className="text-sm text-muted-foreground">
+                  
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>ZY</AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-center">
+                <div className="text-lg font-semibold">Zhan Yan</div>
+                <div className="text-sm text-muted-foreground">Frontend</div>
+                <p className="text-sm text-muted-foreground">
+                  
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>KP</AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-center">
+                <div className="text-lg font-semibold">Kendrick</div>
+                <div className="text-sm text-muted-foreground">Frontend + Backend</div>
+                <p className="text-sm text-muted-foreground">
+                  
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>MB</AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-center">
+                <div className="text-lg font-semibold">Ryan</div>
+                <div className="text-sm text-muted-foreground">Backend</div>
+                <p className="text-sm text-muted-foreground">
+
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-col items-center gap-4">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src="/placeholder-user.jpg" />
+                <AvatarFallback>SD</AvatarFallback>
+              </Avatar>
+              <div className="grid gap-1 text-center">
+                <div className="text-lg font-semibold">Nathan</div>
+                <div className="text-sm text-muted-foreground">Consultant</div>
+                <p className="text-sm text-muted-foreground">
+
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
 
       <footer className="w-full bg-gray-800 text-gray-200 py-6">
         <div className="container px-4 md:px-6">
