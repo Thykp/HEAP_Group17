@@ -10,11 +10,12 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist", // Ensure the output directory is 'dist'
+    outDir: "dist",
   },
+
   server: {
     proxy: {
-      "/api": "https://workout-wise-backend.vercel.app/", // Proxy API requests to your local backend
+      // "/api": "http://localhost:3000"
     },
   },
 });
