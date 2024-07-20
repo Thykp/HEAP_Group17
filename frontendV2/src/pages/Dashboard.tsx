@@ -107,10 +107,6 @@ export default function Dashboard() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
-            {/* <Button variant="ghost" size="icon" className="rounded-full">
-              <img src="/placeholder.svg" width="36" height="36" className="rounded-full" alt="Avatar" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button> */}
           </div>
         </div>
       </header>
