@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from "axios";
 import { Button } from "../components/ui/button";
@@ -29,7 +29,7 @@ export default function Generate() {
   });
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -77,24 +77,24 @@ export default function Generate() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="interest">Interests</Label>
-            <Select
-              id="interest"
-              name="interest"
-              value={formData.interest}
-              onValueChange={(value) => setFormData({ ...formData, interest: value })}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select your interests" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="Bodybuilding">Bodybuilding</SelectItem>
-                <SelectItem value="Strength">Strength</SelectItem>
-                <SelectItem value="Powerlifting">Powerlifting</SelectItem>
-                <SelectItem value="Calisthenics">Calisthenics</SelectItem>
-                <SelectItem value="Armwrestling">Armwrestling</SelectItem>
-                <SelectItem value="General Fitness">General Fitness</SelectItem>
-              </SelectContent>
-            </Select>
+            <div id="interest" className="relative">
+              <Select
+                value={formData.interest}
+                onValueChange={(value) => setFormData({ ...formData, interest: value })}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your interests" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Bodybuilding">Bodybuilding</SelectItem>
+                  <SelectItem value="Strength">Strength</SelectItem>
+                  <SelectItem value="Powerlifting">Powerlifting</SelectItem>
+                  <SelectItem value="Calisthenics">Calisthenics</SelectItem>
+                  <SelectItem value="Armwrestling">Armwrestling</SelectItem>
+                  <SelectItem value="General Fitness">General Fitness</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <div className="grid gap-2">
             <Label htmlFor="free_days">Free Days</Label>
@@ -156,7 +156,7 @@ export default function Generate() {
   );
 }
 
-function ArrowLeftIcon(props) {
+function ArrowLeftIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

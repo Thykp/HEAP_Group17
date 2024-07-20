@@ -16,17 +16,19 @@ export default function Register() {
     email: '',
     password: ''
   });
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
+  // Typing the event parameter
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.id]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  // Typing the event parameter
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.post(`${baseURL}/userAccount/register`, {
@@ -38,12 +40,17 @@ export default function Register() {
       
       console.log('User registered successfully:', response.data);
       navigate('/login');
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error registering user:', error);
-      if (error.response && error.response.status === 409) {
-        setErrorMessage('An account with this email already exists. Please log in.');
+
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 409) {
+          setErrorMessage('An account with this email already exists. Please log in.');
+        } else {
+          setErrorMessage('An error occurred during registration. Please try again.');
+        }
       } else {
-        setErrorMessage('An error occurred during registration. Please try again.');
+        setErrorMessage('An unknown error occurred. Please try again.');
       }
     }
   };

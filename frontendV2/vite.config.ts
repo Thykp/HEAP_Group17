@@ -14,7 +14,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/api": "http://localhost:3000", // Proxy API requests to your local backend
+      "/api": "https://workout-wise-backend.vercel.app/", // Proxy API requests to your local backend
     },
   },
 });

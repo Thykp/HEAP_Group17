@@ -1,15 +1,19 @@
+import { MouseEvent } from 'react';
 import { NavigationMenu, NavigationMenuList, NavigationMenuLink } from "../components/ui/navigation-menu";
 import { Link } from 'react-router-dom';
 import { FaReact, FaNodeJs, FaJsSquare, FaCss3Alt } from 'react-icons/fa';
 import { RiSupabaseFill, RiTailwindCssFill } from "react-icons/ri";
 import { SiTypescript, SiShadcnui } from "react-icons/si";
 import { AiOutlineOpenAI } from "react-icons/ai";
-import { Avatar, AvatarImage, AvatarFallback } from "../components/ui/avatar"
 
 export default function Landing() {
-  const handleScroll = (e, targetId) => {
+  const handleScroll = (e: MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
-    document.getElementById(targetId).scrollIntoView({ behavior: 'smooth' });
+    const targetElement = document.getElementById(targetId);
+
+    if (targetElement) {
+      targetElement.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   return (
@@ -116,20 +120,24 @@ export default function Landing() {
                     <span className="text-gray-800 dark:text-gray-200">JavaScript</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <SiTypescript className="text-blue-400 text-2xl" />
+                    <SiTypescript className="text-blue-600 text-2xl" />
                     <span className="text-gray-800 dark:text-gray-200">TypeScript</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <RiTailwindCssFill className="text-blue-300 text-2xl" />
+                    <RiTailwindCssFill className="text-blue-400 text-2xl" />
                     <span className="text-gray-800 dark:text-gray-200">Tailwind CSS</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <SiShadcnui className="text-black-500 text-2xl" />
-                    <span className="text-gray-800 dark:text-gray-200">Shadcn/UI</span>
+                    <SiShadcnui className="text-pink-500 text-2xl" />
+                    <span className="text-gray-800 dark:text-gray-200">Shadcn UI</span>
+                  </div>
+                  <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <FaCss3Alt className="text-blue-600 text-2xl" />
+                    <span className="text-gray-800 dark:text-gray-200">CSS</span>
                   </div>
                 </div>
               </div>
-
+              <br />
               {/* Backend Technologies */}
               <div className="mt-8">
                 <h3 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-gray-200">Backend</h3>
@@ -139,20 +147,12 @@ export default function Landing() {
                     <span className="text-gray-800 dark:text-gray-200">Node.js</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <FaJsSquare className="text-green-600 text-2xl" />
-                    <span className="text-gray-800 dark:text-gray-200">Express.js</span>
-                  </div>
-                  <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <FaJsSquare className="text-yellow-500 text-2xl" />
-                    <span className="text-gray-800 dark:text-gray-200">JavaScript</span>
-                  </div>
-                  <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <RiSupabaseFill className="text-green-500 text-2xl" />
+                    <RiSupabaseFill className="text-green-600 text-2xl" />
                     <span className="text-gray-800 dark:text-gray-200">Supabase</span>
                   </div>
                   <div className="border border-gray-200 rounded-lg p-4 flex items-center justify-center space-x-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
-                    <AiOutlineOpenAI className="text-black-500 text-2xl" />
-                  <span className="text-gray-800 dark:text-gray-200">OpenAI</span>
+                    <AiOutlineOpenAI className="text-green-500 text-2xl" />
+                    <span className="text-gray-800 dark:text-gray-200">OpenAI</span>
                   </div>
                 </div>
               </div>
@@ -161,87 +161,13 @@ export default function Landing() {
         </div>
       </section>
 
-      <section className="w-full py-12 md:py-24 lg:py-32">
-        <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 lg:gap-10">
-          <div className="space-y-3">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">Meet the Team</h2>
-            <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-              The team behind the creation of this website.
-            </p>
-          </div>
-          <div className="grid w-full max-w-5xl grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>CK</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-center">
-                <div className="text-lg font-semibold">Choon Kiat</div>
-                <div className="text-sm text-muted-foreground">Frontend</div>
-                <p className="text-sm text-muted-foreground">
-                  
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>ZY</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-center">
-                <div className="text-lg font-semibold">Zhan Yan</div>
-                <div className="text-sm text-muted-foreground">Frontend</div>
-                <p className="text-sm text-muted-foreground">
-                  
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>KP</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-center">
-                <div className="text-lg font-semibold">Kendrick</div>
-                <div className="text-sm text-muted-foreground">Frontend + Backend</div>
-                <p className="text-sm text-muted-foreground">
-                  
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>MB</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-center">
-                <div className="text-lg font-semibold">Ryan</div>
-                <div className="text-sm text-muted-foreground">Backend</div>
-                <p className="text-sm text-muted-foreground">
-
-                </p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-20 w-20">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback>SD</AvatarFallback>
-              </Avatar>
-              <div className="grid gap-1 text-center">
-                <div className="text-lg font-semibold">Nathan</div>
-                <div className="text-sm text-muted-foreground">Consultant</div>
-                <p className="text-sm text-muted-foreground">
-
-                </p>
-              </div>
-            </div>
+      <footer className="w-full bg-gray-800 text-gray-200 py-6">
+        <div className="container px-4 md:px-6">
+          <div className="text-center">
+            <p>&copy; {new Date().getFullYear()} WorkoutWise. All rights reserved.</p>
           </div>
         </div>
-      </section>
-
-      <div className="w-full h-20 flex items-center justify-center border-t text-gray-600 dark:border-gray-800 dark:text-gray-300">
-        <p>&copy; Made by Grp17</p>
-      </div>
+      </footer>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import axios from "axios";
 
 const baseURL = import.meta.env.VITE_ENDPOINT ?? `http://localhost:${import.meta.env.VITE_PORT}`;
 
-const initialWorkoutPlan = {
+const initialWorkoutPlan: { [key: string]: Array<{ name: string; sets: number; reps: number; weight: number }> } = {
   Monday: [],
   Tuesday: [],
   Wednesday: [],
@@ -15,13 +15,30 @@ const initialWorkoutPlan = {
   Sunday: [],
 };
 
+interface Exercise {
+  exercise: string;
+  set: number;
+  reps: number;
+  weight: number;
+}
+
+interface DayData {
+  day_of_week: keyof typeof initialWorkoutPlan;
+  exercises: Exercise[];
+}
+
+interface WorkoutResponse {
+  workout: {
+    days: DayData[];
+  };
+}
+
 export default function Workout() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, uuid } = location.state || {};
-  console.log(uuid)
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [workoutPlan, setWorkoutPlan] = useState(initialWorkoutPlan);
+  const [selectedDay, setSelectedDay] = useState<keyof typeof initialWorkoutPlan | null>(null);
+  const [workoutPlan, setWorkoutPlan] = useState<typeof initialWorkoutPlan>(initialWorkoutPlan);
 
   useEffect(() => {
     if (!user || !uuid) {
@@ -31,21 +48,25 @@ export default function Workout() {
 
     const fetchWorkoutPlan = async () => {
       try {
-        const response = await axios.post(`${baseURL}/workout/retrieve`, { uuid });
+        const response = await axios.post<WorkoutResponse>(`${baseURL}/workout/retrieve`, { uuid });
         console.log('API Response:', response);
         const workoutData = response.data.workout;
         console.log('Workout Data:', workoutData);
         const formattedWorkoutPlan = formatWorkoutPlan(workoutData);
         setWorkoutPlan(formattedWorkoutPlan);
       } catch (error) {
-        console.error("Error fetching workout plan:", error.response?.data || error.message);
+        if (axios.isAxiosError(error)) {
+          console.error("Error fetching workout plan:", error.response?.data || error.message);
+        } else {
+          console.error("Error fetching workout plan:", error);
+        }
       }
     };
 
     fetchWorkoutPlan();
   }, [user, uuid, navigate]);
 
-  const formatWorkoutPlan = (data) => {
+  const formatWorkoutPlan = (data: WorkoutResponse['workout']) => {
     const plan = { ...initialWorkoutPlan };
 
     if (data && data.days) {
@@ -78,11 +99,11 @@ export default function Workout() {
       </header>
       <main className="flex-1 p-4 md:p-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-7 gap-4">
-          {Object.keys(workoutPlan).map((day, index) => (
+          {Object.keys(workoutPlan).map((day) => (
             <Card
-              key={index}
+              key={day}
               className={`bg-card ${selectedDay === day ? "ring-2 ring-primary" : ""}`}
-              onClick={() => setSelectedDay(day)}
+              onClick={() => setSelectedDay(day as keyof typeof initialWorkoutPlan)}
             >
               <CardHeader>
                 <CardTitle>{day}</CardTitle>
@@ -102,7 +123,7 @@ export default function Workout() {
             </Card>
           ))}
         </div>
-        {selectedDay && workoutPlan[selectedDay].length > 0 && (
+        {selectedDay && workoutPlan[selectedDay]?.length > 0 && (
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-4">{selectedDay} Workouts</h2>
             <div className="grid gap-4">
@@ -117,7 +138,7 @@ export default function Workout() {
             </div>
           </div>
         )}
-        {selectedDay && workoutPlan[selectedDay].length === 0 && (
+        {selectedDay && workoutPlan[selectedDay]?.length === 0 && (
           <div className="mt-4">
             <h2 className="text-xl font-bold mb-4">{selectedDay} Workouts</h2>
             <div className="text-muted-foreground">No exercises scheduled for this day.</div>

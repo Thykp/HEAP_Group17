@@ -15,7 +15,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     try {
