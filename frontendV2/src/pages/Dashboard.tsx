@@ -129,22 +129,20 @@ export default function Dashboard() {
               <CardTitle>Weekly Workout Schedule</CardTitle>
             </CardHeader>
             <CardContent className="grid gap-4">
-              <div className="grid grid-cols-2 gap-4">
-                {Object.keys(exercisesByDay).map((day) => (
-                  <div
-                    key={day}
-                    className={`bg-muted rounded-md p-4 cursor-pointer ${selectedDay === day ? "bg-primary text-primary-foreground" : ""}`}
-                    onClick={() => setSelectedDay(day as DayOfWeek)}
-                  >
-                    <h3 className="text-lg font-medium">{day}</h3>
-                    <p className="text-muted-foreground">
-                      {exercisesByDay[day].length === 0 ? "Rest Day" : ""} 
-                      <br />
-                      {exercisesByDay[day].length === 0 ? "" : (day === "Monday" || day === "Thursday")}
-                    </p>
-                  </div>
-                ))}
+            <div className="grid grid-cols-2 gap-4">
+            {Object.keys(exercisesByDay).map((day) => (
+              <div
+                key={day}
+                className={`bg-muted rounded-md p-4 cursor-pointer ${selectedDay === day ? "bg-primary text-primary-foreground" : ""}`}
+                onClick={() => setSelectedDay(day as DayOfWeek)}
+              >
+                <h3 className="text-lg font-medium">{day}</h3>
+                <p className="text-muted-foreground">
+                  {exercisesByDay[day].length === 0 ? "Rest Day" : "Training Day"}
+                </p>
               </div>
+                ))}
+             </div>
               <div>
                 <h3 className="text-lg font-medium">Exercises</h3>
                 <ul className="list-none pl-0 text-muted-foreground">
